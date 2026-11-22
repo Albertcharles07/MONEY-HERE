@@ -1,0 +1,1 @@
+import React from 'react';import {Screen,Card,Txt} from '../components/UI';export default function Page(){return <Screen title="Contato"><Card><Txt>"Canal de contato ainda não configurado. Antes de publicar, informe o e-mail institucional e a equipe responsável. Não envie dados bancários ou senhas pelo contato."</Txt></Card></Screen>}

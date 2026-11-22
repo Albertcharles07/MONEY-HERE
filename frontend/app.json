@@ -1,0 +1,37 @@
+{
+  "expo": {
+    "name": "Money Here",
+    "slug": "money-here",
+    "scheme": "moneyhere",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.moneyhere.app"
+    },
+    "android": {
+      "package": "com.moneyhere.app",
+      "edgeToEdgeEnabled": true
+    },
+    "web": {
+      "bundler": "metro",
+      "name": "Money Here",
+      "shortName": "Money Here",
+      "themeColor": "#0c8b72",
+      "description": "Educação financeira para crianças e adultos"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": false
+    }
+  }
+}
