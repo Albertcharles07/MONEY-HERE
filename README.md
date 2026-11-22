@@ -212,3 +212,17 @@ Cada integrante deve fazer commits com mudanças reais. Exemplo de distribuiçã
 - PostgreSQL: https://www.postgresql.org/docs/
 
 Projeto educativo — taxas e exemplos são ilustrativos. Não é aconselhamento financeiro.
+## Contribuições individuais
+
+### Charles Elias de Araujo — RM: 1143175185
+
+- Preparação e configuração do ambiente de desenvolvimento.
+- Instalação e configuração do Java 21.
+- Instalação das dependências do frontend e backend.
+- Compilação e validação do backend utilizando Maven.
+- Configuração e execução da API Spring Boot.
+- Execução dos testes automatizados das calculadoras, com 7 testes aprovados.
+- Testes funcionais de cadastro e login.
+- Testes de criação, edição e exclusão de metas.
+- Testes de receitas e despesas.
+- Inicialização do Git, configuração do repositório remoto e publicação do projeto no GitHub.
