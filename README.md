@@ -65,7 +65,7 @@ try {
 
 Ao subir, o backend cria a conta com papel `ADMIN` e senha BCrypt. Em reinicializações seguintes, use o comando normal. Se o mesmo admin já existir, a configuração preserva a senha cadastrada. Uma conta comum que já existe precisa continuar separada da conta de administração.
 
-Entre com a conta criada e abra **Administração** no menu ou a rota `/admin`. O painel lista contas e permite pesquisar pelo nome ou e-mail. No menu Opções de cada conta, o administrador pode ativar ou desativar usuários comuns, definir uma senha temporária, apagar contas e alterar o papel entre usuário e administrador. A pessoa que recebe uma senha temporária deve trocá-la ao entrar. Alterações de acesso e senha encerram a sessão existente da conta. Uma conta desativada perde acesso aos endpoints privados e volta a poder entrar quando reativada. A conta administrativa permite troca de senha pela área autenticada.
+Entre com a conta criada e abra **Administração** no menu ou a rota `/admin`. O painel lista contas e permite pesquisar pelo nome ou e-mail. No menu **Opções**, o administrador pode ativar ou desativar contas comuns e administradores secundários, definir uma senha temporária, apagar contas e alterar o papel entre usuário e administrador. O administrador principal tem uma conta protegida. As rotas administrativas bloqueiam qualquer alteração nessa conta, e o painel oculta o menu **Opções** dela. A pessoa que recebe uma senha temporária deve trocá-la ao entrar. Alterações de acesso e senha encerram a sessão existente da conta. Uma conta desativada perde acesso aos endpoints privados e volta a poder entrar quando reativada. A conta administrativa permite troca de senha pela área autenticada.
 
 ### Recuperação de senha por e-mail
 
@@ -129,7 +129,7 @@ Conecte o computador e o celular ao mesmo Wi-Fi. Inicie o backend com o script e
 | GET | `/api/public/content/{key}` | Artigo individual |
 | GET | `/api/public/tracks` | Trilhas |
 | GET/POST | `/api/admin/users` | Lista contas e cria usuários comuns |
-| PUT | `/api/admin/users/{id}/status` | Desativa ou reativa uma conta comum |
+| PUT | `/api/admin/users/{id}/status` | Desativa ou reativa uma conta, inclusive de administrador secundário |
 | PUT | `/api/admin/users/{id}/role` | Altera o papel da conta |
 | PUT | `/api/admin/users/{id}/password` | Define senha temporária |
 | DELETE | `/api/admin/users/{id}` | Apaga a conta e os dados associados |

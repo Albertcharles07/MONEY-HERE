@@ -11,6 +11,7 @@ public final class Model { private Model(){} }
  @Column(name="password_hash",nullable=false) public String passwordHash;
  public boolean verified=false;
  @Enumerated(EnumType.STRING) @Column(nullable=false,length=16) public AccountRole role=AccountRole.USER;
+ @Column(name="primary_admin",nullable=false,updatable=false) public boolean primaryAdmin;
  @Column(nullable=false) public boolean enabled=true;
  @Column(name="must_change_password",nullable=false) public boolean mustChangePassword=false;
  @Column(name="session_version",nullable=false) public int sessionVersion;

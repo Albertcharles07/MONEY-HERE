@@ -54,9 +54,6 @@ public class AdminController {
     public Account status(@AuthenticationPrincipal Jwt jwt, @PathVariable Long id,
                           @Valid @RequestBody Dto.AccountStatus body) {
         User account = target(jwt, id);
-        if (account.role == AccountRole.ADMIN) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Somente contas comuns podem ser desativadas");
-        }
         if (account.enabled != body.enabled()) {
             account.enabled = body.enabled();
             account.sessionVersion++;
@@ -97,7 +94,7 @@ public class AdminController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
     public void delete(@AuthenticationPrincipal Jwt jwt, @PathVariable Long id) {
-        users.delete(target(jwt, id));
+        auth.deleteAccount(target(jwt, id));
     }
 
     private User target(Jwt jwt, Long id) {
@@ -106,8 +103,12 @@ public class AdminController {
         User actor = requireAdmin(jwt);
         if (actor.id.equals(id))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Use seu perfil para administrar sua própria senha");
-        return users.findLockedById(id).orElseThrow(
+        User account = users.findLockedById(id).orElseThrow(
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conta não encontrada"));
+        if (account.primaryAdmin) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "A conta do administrador principal é protegida");
+        }
+        return account;
     }
 
     private User requireAdmin(Jwt jwt) {
@@ -119,9 +120,9 @@ public class AdminController {
         return user;
     }
 
-    public record Account(Long id, String name, String email, AccountRole role, boolean enabled) {
+    public record Account(Long id, String name, String email, AccountRole role, boolean enabled, boolean primaryAdmin) {
         static Account from(User user) {
-            return new Account(user.id, user.name, user.email, user.role, user.enabled);
+            return new Account(user.id, user.name, user.email, user.role, user.enabled, user.primaryAdmin);
         }
     }
 }

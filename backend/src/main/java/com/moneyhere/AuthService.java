@@ -115,7 +115,12 @@ import java.util.HexFormat;
   return user.mustChangePassword && "admin@123".equals(password);
  }
  @Transactional public void delete(User user){
-  if(user.role==AccountRole.ADMIN)throw new ResponseStatusException(HttpStatus.FORBIDDEN,"A conta de administração não pode ser excluída aqui");
+  User account=users.findLockedById(user.id).orElseThrow(()->new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+  if(account.role==AccountRole.ADMIN)throw new ResponseStatusException(HttpStatus.FORBIDDEN,"A conta de administração não pode ser excluída aqui");
+  deleteAccount(account);
+ }
+ void deleteAccount(User user){
+  if(user.primaryAdmin)throw new ResponseStatusException(HttpStatus.FORBIDDEN,"O administrador principal só pode ser excluído diretamente no banco de dados");
   users.delete(user);
  }
 }

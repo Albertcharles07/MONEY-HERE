@@ -4,9 +4,11 @@ import {Btn, Card, ErrorText, Input, Screen, Txt} from '../components/UI';
 import {api} from '../lib/api';
 import {useSession} from '../lib/session';
 
-type Account = {id: number; name: string; email: string; enabled: boolean; role: 'USER' | 'ADMIN'};
+type Account = {id: number; name: string; email: string; enabled: boolean; role: 'USER' | 'ADMIN'; primaryAdmin: boolean};
 type Accounts = {content: Account[]; first: boolean; last: boolean};
 type Action = 'status' | 'role' | 'password' | 'delete';
+
+const accountActions: readonly Action[] = ['status', 'role', 'password', 'delete'];
 
 function actionLabel(account: Account, action: Action) {
   if (action === 'password') return 'Resetar senha';
@@ -127,16 +129,18 @@ export default function Admin() {
           <Card key={account.id}>
             <Txt bold>{account.name}</Txt>
             <Txt>{account.email}</Txt>
-            <Txt muted>{account.role === 'ADMIN' ? 'Administrador' : account.enabled ? 'Conta ativa' : 'Conta desativada'}</Txt>
-            {account.id !== user.id && (
+            <Txt muted>{account.primaryAdmin ? 'Administrador principal' :
+              [account.role === 'ADMIN' && 'Administrador', account.enabled ? 'Conta ativa' : 'Conta desativada']
+                .filter(Boolean).join(' · ')}</Txt>
+            {!account.primaryAdmin && account.id !== user.id && (
               <Btn title={menu === account.id ? 'Opções ▴' : 'Opções ▾'} secondary disabled={busy} onPress={() => {
                 setMenu(menu === account.id ? undefined : account.id);
                 clearSelection();
               }} />
             )}
-            {menu === account.id && (
+            {!account.primaryAdmin && menu === account.id && (
               <View accessibilityLabel="Opções do usuário" style={{flexDirection: 'row', flexWrap: 'wrap', gap: 8}}>
-                {(account.role === 'USER' ? ['status', 'role', 'password', 'delete'] as const : ['role', 'password', 'delete'] as const)
+                {accountActions
                   .map(action => <Btn key={action} title={actionLabel(account, action)} secondary danger={action === 'delete'}
                     onPress={() => {
                       clearSelection();
@@ -146,7 +150,7 @@ export default function Admin() {
                     }} />)}
               </View>
             )}
-            {selection?.account.id === account.id && (
+            {!account.primaryAdmin && selection?.account.id === account.id && (
               <View style={{gap: 8}}>
                 <Txt bold>{actionLabel(account, selection.action)}</Txt>
                 {selection.action === 'password' && <Input label="Senha temporária (mínimo 12 caracteres)"

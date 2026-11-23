@@ -44,8 +44,10 @@ class AdminBootstrap implements ApplicationRunner {
             throw new IllegalStateException("Configure e-mail válido e senha de administração de 12 a 72 bytes");
         }
         jdbc.update("""
-            insert into app_users(name, email, password_hash, role, must_change_password)
-            values (?, ?, ?, 'ADMIN', ?) on conflict (email) do nothing
+            insert into app_users(name, email, password_hash, role, must_change_password, primary_admin)
+            values (?, ?, ?, 'ADMIN', ?, true)
+            on conflict (email) do update set primary_admin = true
+            where app_users.role = 'ADMIN' and not app_users.primary_admin
             """, account.name(), normalizedEmail, passwords.encode(password), temporary);
         if (users.findByEmail(normalizedEmail).filter(user -> user.role == AccountRole.ADMIN).isEmpty()) {
             throw new IllegalStateException("O e-mail de administração já pertence a uma conta comum");
