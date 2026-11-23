@@ -2,6 +2,8 @@ package com.moneyhere;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
@@ -12,8 +14,12 @@ import java.util.Map;
 @RequestMapping("/api/public")
 public class ContentController {
   private final JdbcTemplate jdbc;
+  private final AuthService auth;
 
-  public ContentController(JdbcTemplate jdbc) { this.jdbc = jdbc; }
+  public ContentController(JdbcTemplate jdbc, AuthService auth) {
+    this.jdbc = jdbc;
+    this.auth = auth;
+  }
 
   @GetMapping("/content")
   public List<Map<String, Object>> all(@RequestParam(required = false) String category) {
@@ -34,7 +40,8 @@ public class ContentController {
   }
 
   @GetMapping("/tracks")
-  public List<Map<String, Object>> tracks() {
+  public List<Map<String, Object>> tracks(@AuthenticationPrincipal Jwt jwt) {
+    auth.me(jwt);
     List<Map<String, Object>> result = new java.util.ArrayList<>();
     for (Map<String, Object> track : jdbc.queryForList("select id, track_key as key, title from educational_tracks order by id")) {
       Long id = ((Number) track.get("id")).longValue();

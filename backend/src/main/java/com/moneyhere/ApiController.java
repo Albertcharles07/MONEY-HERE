@@ -17,7 +17,10 @@ import java.math.*;
  @PostMapping("/auth/login") public Map<String,Object> login(@Valid @RequestBody Dto.Login b,
   jakarta.servlet.http.HttpServletRequest request){return auth.login(b,isLoopback(request));}
  @PostMapping("/auth/verify") public Map<String,String> verify(@RequestBody Map<String,String> b){auth.verify(b.getOrDefault("token",""));return Map.of("message","E-mail verificado");}
- @PostMapping("/auth/forgot") public Map<String,String> forgot(@Valid @RequestBody Dto.Email b){auth.forgot(b.email());return Map.of("message","Se o e-mail existir, você receberá instruções de recuperação.");}
+ @PostMapping("/auth/forgot") public Map<String,String> forgot(@Valid @RequestBody Dto.Email b){
+  auth.forgot(b.email());
+  return Map.of("message","Se houver uma conta habilitada para recuperação por e-mail, você receberá um link. Confira também a pasta de spam.");
+ }
  @PostMapping("/auth/reset") public Map<String,String> reset(@Valid @RequestBody Dto.Reset b){auth.reset(b.token(),b.password());return Map.of("message","Senha redefinida");}
  @GetMapping("/me") public Map<String,Object> me(@AuthenticationPrincipal Jwt jwt){return auth.view(user(jwt));}
  @PutMapping("/me") public Map<String,Object> updateMe(@AuthenticationPrincipal Jwt jwt,@RequestBody Dto.Profile b){return auth.update(user(jwt),b);}

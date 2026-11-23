@@ -17,3 +17,4 @@ target/
 .vscode/
 *.log
 .neon
+/MONEY_HERE-sem-dependencias*.zip

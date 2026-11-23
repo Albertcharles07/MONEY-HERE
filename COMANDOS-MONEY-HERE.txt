@@ -1,0 +1,28 @@
+MONEY HERE - Instalar dependências
+
+Extraia o ZIP. Abra o PowerShell na pasta MONEY_HERE, onde ficam
+o README.md e as pastas frontend e backend.
+
+1. Dependências do projeto e do frontend
+   Execute as duas linhas na raiz da pasta:
+
+   npm.cmd ci
+   npm.cmd --prefix .\frontend ci
+
+2. Dependências do backend Java
+   Execute na mesma pasta:
+
+   mvn.cmd -f .\backend\pom.xml dependency:go-offline
+
+   Se mvn.cmd não for reconhecido, o script abaixo procura o Maven
+   no cache local e baixa as dependências ao iniciar o backend.
+   Em outro computador, é necessário ter o Java 21 e o Maven disponíveis.
+
+   powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\backend\start-neon.ps1
+
+3. Abrir o frontend no navegador, com o backend em execução
+   Em outro PowerShell, na raiz do projeto:
+
+   npm.cmd --prefix .\frontend run web
+
+   Abra http://localhost:8081.

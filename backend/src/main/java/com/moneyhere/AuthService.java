@@ -87,7 +87,12 @@ import java.util.HexFormat;
  }
  private VerificationToken valid(String raw,String purpose){return tokens.findByTokenHashAndPurposeAndUsedFalse(hash(raw),purpose)
   .filter(t->t.expiresAt.isAfter(Instant.now())).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST,"Token inválido ou expirado"));}
- @Transactional public void forgot(String email){users.findByEmail(normalize(email)).filter(u->u.enabled && u.role!=AccountRole.ADMIN).ifPresent(user->sendToken(user,"RESET",30));}
+ @Transactional public void forgot(String email){
+  if(from.isBlank())
+   throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,"A recuperação por e-mail está indisponível no momento.");
+  users.findByEmail(normalize(email)).filter(u->u.enabled && u.role!=AccountRole.ADMIN)
+   .ifPresent(user->sendToken(user,"RESET",30));
+ }
  @Transactional public Map<String,Object> update(User user,Dto.Profile b){
   user=me(user.email);
   if(b.name()!=null&&!b.name().isBlank())user.name=b.name().trim();

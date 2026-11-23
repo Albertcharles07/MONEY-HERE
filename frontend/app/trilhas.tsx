@@ -14,8 +14,9 @@ export default function Tracks() {
   const [msg, setMsg] = useState('');
 
   useEffect(() => {
+    if (!user) return;
     let active = true;
-    Promise.all([api('/public/tracks', {}, true), api('/public/content', {}, true)])
+    Promise.all([api('/public/tracks'), api('/public/content', {}, true)])
       .then(([remoteTracks, remoteArticles]) => {
         if (active) {
           setCatalogTracks(remoteTracks);
@@ -24,7 +25,7 @@ export default function Tracks() {
       })
       .catch(() => {});
     return () => { active = false; };
-  }, []);
+  }, [user]);
 
   useFocusEffect(useCallback(() => {
     let active = true;
@@ -53,7 +54,7 @@ export default function Tracks() {
   }
 
   return (
-    <Screen title="Trilhas de estudo">
+    <Screen title="Trilhas de estudo" protectedPage>
       <Txt muted>Aprenda com módulos curtos e acompanhe seu progresso.</Txt>
       {catalogTracks.map(track => (
         <Card key={track.key}>

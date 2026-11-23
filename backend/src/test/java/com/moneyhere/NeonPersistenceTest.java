@@ -56,7 +56,8 @@ class NeonPersistenceTest {
         api.perform(get("/actuator/health")).andExpect(status().isOk())
             .andExpect(jsonPath("$.status").value("UP"));
         api.perform(get("/api/public/content/orcamento-50-30-20")).andExpect(status().isOk());
-        api.perform(get("/api/public/tracks")).andExpect(status().isOk());
+        api.perform(get("/api/public/tracks")).andExpect(status().isUnauthorized());
+        api.perform(get("/api/goals")).andExpect(status().isUnauthorized());
         api.perform(get("/api/me")).andExpect(status().isUnauthorized());
         api.perform(post("/api/auth/register").contentType(APPLICATION_JSON)
                 .content(json.writeValueAsString(Map.of("name", "Teste Neon", "email", email,
@@ -82,6 +83,8 @@ class NeonPersistenceTest {
             .path("token").asText();
         api.perform(get("/api/me").header("Authorization", authorization))
             .andExpect(status().isOk()).andExpect(jsonPath("$.email").value(email));
+        api.perform(get("/api/public/tracks").header("Authorization", authorization))
+            .andExpect(status().isOk()).andExpect(jsonPath("$").isArray());
 
         api.perform(get("/api/admin/users").header("Authorization", authorization))
             .andExpect(status().isForbidden());

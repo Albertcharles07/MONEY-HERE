@@ -1,0 +1,226 @@
+[
+  {
+    "key": "orcamento-50-30-20",
+    "title": "Para onde vai o seu dinheiro?",
+    "category": "Orçamento",
+    "level": "Básico",
+    "minutes": 4,
+    "body": "Um orçamento mostra quanto entra, quanto sai e o que sobra para suas prioridades. A regra 50/30/20 é um ponto de partida para organizar essas escolhas.\n## Mapeie o mês\nAnote a renda líquida, ou seja, o dinheiro que realmente entra. Reúna extratos, faturas e gastos em dinheiro. Separe necessidades, como moradia e alimentação, de desejos, como lazer e assinaturas. Reserve espaço para metas e pagamento de dívidas.\n## Exemplo com R$ 3.000\n- R$ 1.500 para necessidades pela divisão de referência.\n- R$ 900 para desejos.\n- R$ 600 para poupar ou reduzir dívidas.\nSe as necessidades somarem R$ 1.950, elas ocupam 65% da renda. Ajuste os outros grupos ao valor disponível e use a divisão para observar sua evolução.\n## Coloque em prática\nRegistre os últimos sete dias, agrupe os gastos e faça uma mudança que possa manter durante o mês. Na próxima revisão, compare o limite planejado com o gasto real."
+  },
+  {
+    "key": "orcamento-fixos-e-variaveis",
+    "title": "Gastos fixos, variáveis e anuais",
+    "category": "Orçamento",
+    "level": "Básico",
+    "minutes": 3,
+    "body": "Separe o que tem valor previsível, o que muda conforme o consumo e o que aparece poucas vezes por ano. Isso deixa o mês mais fácil de planejar.\n## Três linhas no orçamento\n- Fixos: aluguel e mensalidades costumam ter valores conhecidos.\n- Variáveis: mercado, energia e transporte podem oscilar.\n- Periódicos: manutenção, material escolar e renovação de serviços pedem planejamento antecipado.\nUma conta pode ser essencial e variável ao mesmo tempo. A classificação indica como estimar o valor.\n## Exemplo de provisão\nUm gasto previsto de R$ 720 daqui a seis meses equivale a R$ 120 por mês. No orçamento, registre a provisão mensal. Quando pagar, use o valor guardado e evite descontar a mesma despesa duas vezes no saldo disponível.\n## Coloque em prática\nOlhe os últimos dois meses e estime um limite para cada gasto variável. Liste também as três próximas despesas anuais e quando você precisará de cada valor."
+  },
+  {
+    "key": "orcamento-renda-variavel",
+    "title": "Como planejar com renda variável",
+    "category": "Orçamento",
+    "level": "Intermediário",
+    "minutes": 4,
+    "body": "Quem recebe por projeto, comissão ou trabalho autônomo pode ter meses bem diferentes. Um orçamento com renda de referência ajuda a distribuir o dinheiro entre eles.\n## Defina uma renda de referência\nCompare os valores líquidos recebidos nos últimos meses. Use um valor conservador para planejar gastos recorrentes. Para cada pagamento, separe os custos do trabalho e as obrigações que saem desse valor antes de calcular quanto está disponível para uso pessoal.\n## Exemplo de três meses\nSe você recebeu R$ 2.400, R$ 3.200 e R$ 2.800 líquidos, pode testar um orçamento com R$ 2.400. No mês de R$ 3.200, os R$ 800 adicionais podem ajudar a cobrir um mês mais fraco ou antecipar uma despesa prevista.\n## Coloque em prática\nMonte uma lista de gastos que precisam ser pagos mesmo em um mês fraco. Depois escolha como dividir a sobra dos meses melhores entre a reserva, as despesas futuras e suas metas."
+  },
+  {
+    "key": "orcamento-metas",
+    "title": "Transforme um objetivo em uma meta mensal",
+    "category": "Orçamento",
+    "level": "Básico",
+    "minutes": 3,
+    "body": "Um objetivo fica mais fácil de acompanhar quando tem valor, prazo e uma contribuição que cabe no orçamento.\n## Do objetivo ao plano\nAnote quanto a meta custa, quanto você já guardou e quando pretende alcançá-la. Subtraia o valor já guardado do alvo e divida a diferença pelo número de meses. Esse cálculo simples dá uma referência sem depender de rendimento.\n## Exemplo de uma compra planejada\nUma meta de R$ 1.500 com R$ 300 guardados ainda precisa de R$ 1.200. Para alcançar em seis meses, planeje R$ 200 mensais. Se só couberem R$ 150, o prazo estimado passa a oito meses.\n## Coloque em prática\nCadastre uma meta no painel. Escolha uma data no mês para revisar o saldo acumulado. Se o preço mudar ou um mês sair do plano, atualize o total, o prazo ou a contribuição."
+  },
+  {
+    "key": "juros-compostos",
+    "title": "Juros compostos sem mistério",
+    "category": "Juros",
+    "level": "Básico",
+    "minutes": 4,
+    "body": "Nos juros compostos, a taxa de cada período incide sobre o saldo acumulado. A mesma lógica pode aumentar o valor de uma aplicação ou de uma dívida sem pagamentos.\n## Veja a conta acontecer\nCom R$ 100 a 1% ao mês, sem movimentações, o primeiro mês termina em R$ 101. No segundo, 1% de R$ 101 é R$ 1,01. O saldo chega a R$ 102,01.\nNos juros simples, a taxa incide sempre sobre o valor inicial. Nesse exemplo, o segundo mês terminaria em R$ 102.\n## O efeito do prazo\nNo começo, a diferença é pequena. Com mais períodos e taxas maiores, ela cresce. Use a mesma unidade para prazo e taxa. Por exemplo, uma taxa mensal deve ser aplicada ao número de meses.\n## Coloque em prática\nNo simulador, teste R$ 100 a 1% ao mês, sem aportes, por 2 e 12 meses. Compare os saldos e separe o valor inicial dos juros acumulados."
+  },
+  {
+    "key": "juros-taxa-mensal-anual",
+    "title": "Taxa mensal e anual na mesma base",
+    "category": "Juros",
+    "level": "Intermediário",
+    "minutes": 4,
+    "body": "Para comparar duas taxas, coloque ambas no mesmo período. Multiplicar uma taxa mensal por 12 não dá a taxa anual efetiva quando existe capitalização composta.\n## Como converter\nSome 1 à taxa mensal em forma decimal, eleve o resultado à potência 12 e subtraia 1. Para 1% ao mês, a conta é 1,01 elevado a 12 menos 1, cerca de 12,68% ao ano.\n## Exemplo de comparação\nUma opção com 1% ao mês tem taxa efetiva anual de cerca de 12,68%. Outra com 12% efetivos ao ano tem taxa menor nessa comparação. Para avaliar um crédito, examine também os custos incluídos no CET e o cronograma de pagamentos.\n## Coloque em prática\nConverta 2% ao mês usando 1,02 elevado a 12. Compare o resultado, cerca de 26,82% ao ano, com 24%, que seria a multiplicação simples."
+  },
+  {
+    "key": "juros-cet",
+    "title": "O que o CET mostra sobre um empréstimo",
+    "category": "Juros",
+    "level": "Intermediário",
+    "minutes": 4,
+    "body": "O Custo Efetivo Total, ou CET, reúne juros e outros custos da operação de crédito. Ele ajuda a comparar propostas com despesas diferentes.\n## O que conferir\n- Valor líquido que será liberado e data do recebimento.\n- CET, quantidade de parcelas e datas de pagamento.\n- Tarifas, encargos, tributos e seguros cobrados na operação.\nCompare alternativas equivalentes e observe também quanto você efetivamente pagará até o fim.\n## Exemplo de duas propostas\nImagine receber R$ 2.000 em ambas. Na primeira, você paga 10 parcelas de R$ 230, total de R$ 2.300. Na segunda, são 10 parcelas de R$ 220 e uma tarifa de R$ 150 paga à parte, total de R$ 2.350. A segunda tem parcela menor, mas custa R$ 50 a mais no total.\n## Coloque em prática\nAnote lado a lado valor liberado, CET, vencimentos e total pago em duas propostas fictícias. Explique qual informação cada número ajuda a responder."
+  },
+  {
+    "key": "juros-inflacao",
+    "title": "Inflação e o poder de compra",
+    "category": "Juros",
+    "level": "Básico",
+    "minutes": 3,
+    "body": "O saldo pode crescer e ainda assim comprar quase a mesma coisa. A inflação ajuda a medir quanto os preços mudam ao longo do tempo.\n## Valor nominal e valor real\nO percentual nominal mede a variação do dinheiro. O percentual real ajusta essa variação pela inflação do mesmo período. Para calcular, divida um mais a variação nominal por um mais a inflação e subtraia um.\n## Exemplo com R$ 1.000\nSe R$ 1.000 viram R$ 1.080 e a inflação do período é de 5%, o ganho real é de aproximadamente 2,86%, antes de custos ou impostos. Uma cesta que custava R$ 1.000 passaria, nesse exemplo, a custar R$ 1.050.\n## Coloque em prática\nCompare um aumento de renda de 4% com uma inflação hipotética de 6%. Faça a conta com 1,04 dividido por 1,06 para verificar se o poder de compra subiu ou caiu."
+  },
+  {
+    "key": "reserva",
+    "title": "Sua primeira reserva de emergência",
+    "category": "Reserva",
+    "level": "Básico",
+    "minutes": 4,
+    "body": "A reserva de emergência ajuda a pagar despesas essenciais quando aparece um imprevisto, como perda de renda ou um reparo urgente.\n## Estime suas despesas essenciais\nSome moradia, alimentação básica, saúde, transporte e compromissos indispensáveis. Escolha quantos meses quer cobrir levando em conta a estabilidade da renda e quantas pessoas dependem dela. Você pode começar com uma meta menor e ampliar aos poucos.\n## Exemplo de dois marcos\nSe o essencial custa R$ 1.800 por mês, um primeiro marco é juntar R$ 1.800. Uma meta de três meses soma R$ 5.400. Com R$ 300 por mês, o primeiro marco levaria seis meses, sem considerar rendimentos.\n## Coloque em prática\nCadastre sua primeira meta e defina o que conta como emergência. Se precisar usar parte do dinheiro, registre o saque e inclua a reposição no orçamento dos meses seguintes."
+  },
+  {
+    "key": "reserva-emergencia-ou-despesa",
+    "title": "Emergência ou despesa planejada?",
+    "category": "Reserva",
+    "level": "Básico",
+    "minutes": 3,
+    "body": "Separar imprevistos de gastos que você já consegue antecipar ajuda a preservar a reserva para quando ela for necessária.\n## Use três perguntas\n- Eu sabia que essa despesa poderia chegar nesta época?\n- Ela é essencial e precisa ser resolvida agora?\n- Já tenho uma provisão separada para ela?\nAs respostas ajudam a escolher entre o orçamento do mês, uma provisão para gastos futuros ou a reserva.\n## Exemplo de dois reparos\nA manutenção anual de uma moto pode entrar em uma provisão. Se custar R$ 600 e estiver prevista para daqui a dez meses, são R$ 60 por mês. Um reparo urgente após uma avaria inesperada pode ter outro tratamento se o veículo for necessário para trabalhar.\n## Coloque em prática\nClassifique cinco despesas recentes como recorrentes, previsíveis ou emergenciais. Escolha uma previsível para começar a provisionar antes do próximo vencimento."
+  },
+  {
+    "key": "reserva-liquidez",
+    "title": "Liquidez da reserva na prática",
+    "category": "Reserva",
+    "level": "Intermediário",
+    "minutes": 3,
+    "body": "Liquidez indica a facilidade de transformar uma aplicação em dinheiro. Para uma reserva, vale entender quando o valor estará efetivamente disponível e quanto poderá oscilar.\n## Leia a regra de resgate\nConfira carência, horário de solicitação, dias úteis e prazo até o dinheiro chegar à conta. Avalie também o risco de resgatar por um valor menor do que o esperado. Produtos diferentes podem ter regras de liquidez diferentes.\n## Exemplo de calendário\nSe um resgate solicitado na sexta depois do horário de corte só for aceito na segunda e liquidado no próximo dia útil, o dinheiro pode chegar na terça. Uma emergência no sábado exige considerar esse intervalo.\n## Coloque em prática\nDesenhe dois cenários de saque, um em dia útil e outro antes de um feriado. Marque em qual dia você poderia usar o dinheiro em cada caso e quais condições poderiam atrasar o acesso."
+  },
+  {
+    "key": "reserva-recompor",
+    "title": "Como recompor a reserva depois de usar",
+    "category": "Reserva",
+    "level": "Básico",
+    "minutes": 3,
+    "body": "Usar a reserva em um imprevisto faz parte do plano. A recomposição começa pela diferença entre a meta e o valor que ainda está disponível.\n## Recalcule o alvo\nAtualize suas despesas essenciais e veja se o objetivo anterior ainda faz sentido. Defina uma contribuição que caiba no orçamento atual e acompanhe o progresso em etapas.\n## Exemplo com um reparo\nUma reserva de R$ 4.000 que teve um saque de R$ 1.200 fica com R$ 2.800. Se a meta continuar em R$ 4.000, guardando R$ 200 por mês você recompõe o valor em seis meses, sem considerar rendimentos.\n## Coloque em prática\nAnote o saldo atual, a meta e a contribuição possível. Se a renda caiu, escolha um primeiro marco menor e recalcule o prazo quando o orçamento estabilizar."
+  },
+  {
+    "key": "dividas",
+    "title": "Como organizar dívidas",
+    "category": "Dívidas",
+    "level": "Intermediário",
+    "minutes": 4,
+    "body": "Uma lista de dívidas ajuda a decidir o que cabe pagar, o que precisa ser negociado e onde pagamentos extras podem fazer diferença.\n## Monte o inventário\nRegistre credor, saldo devedor, parcela, vencimento, taxa e atraso. Separe o valor que precisa ficar disponível para despesas essenciais. Anote também consequências como a interrupção de um serviço relevante.\n## Compare duas prioridades\nImagine uma dívida de R$ 800 com juros de 2% ao mês e outra de R$ 1.500 a 5% ao mês. Priorizar a maior taxa tende a reduzir juros quando as demais condições são comparáveis. Priorizar o menor saldo pode encerrar um compromisso mais rapidamente. Considere as obrigações de cada contrato e os riscos de atraso.\n## Coloque em prática\nSelecione até três dívidas. Compare a ordem por taxa com a ordem por saldo. Escolha qual pagamento adicional cabe no mês e registre a data em que vai revisar o plano."
+  },
+  {
+    "key": "dividas-negociacao",
+    "title": "Como preparar uma renegociação",
+    "category": "Dívidas",
+    "level": "Básico",
+    "minutes": 4,
+    "body": "Antes de aceitar uma proposta, descubra qual compromisso mensal cabe no orçamento e quanto será pago até o fim.\n## Prepare a conversa\nConfirme o credor e os canais oficiais de atendimento. Peça saldo atualizado, valor de entrada, parcelas, vencimentos, total pago e condições em caso de atraso. Guarde a proposta e o comprovante do acordo.\n## Exemplo de capacidade de pagamento\nSe após as despesas essenciais sobram R$ 300, uma parcela de R$ 290 deixa margem pequena para variações. Compare com uma opção de R$ 220 e veja também quanto ela aumenta o total, se tiver prazo maior.\n## Coloque em prática\nMonte duas propostas fictícias e coloque em uma tabela o valor de entrada, o total e as datas. Faça um teste com uma despesa inesperada de R$ 80 no mês e veja se cada parcela ainda cabe."
+  },
+  {
+    "key": "dividas-cartao",
+    "title": "Cartão de crédito e compromissos futuros",
+    "category": "Dívidas",
+    "level": "Básico",
+    "minutes": 4,
+    "body": "O cartão reúne compras em uma fatura. Controlar as parcelas futuras ajuda a saber quanto da renda dos próximos meses já está comprometido.\n## Leia a fatura em duas partes\nVeja o total que vence agora e a lista de parcelas que ainda serão cobradas. Se considerar financiar o saldo da fatura, compare encargos, prazo e total das opções.\n## Exemplo de meses sobrepostos\nUma compra de R$ 600 em seis parcelas de R$ 100 coincide com outra de R$ 240 em três parcelas de R$ 80. Por três meses, elas somam R$ 180 por mês, além de todas as outras compras. Para enxergar isso antes de comprar, reserve o espaço no orçamento futuro.\n## Coloque em prática\nMonte uma tabela de três meses com as parcelas já contratadas. Para uma nova compra hipotética, preencha os meses afetados e veja se você ainda consegue pagar a fatura integral."
+  },
+  {
+    "key": "dividas-parcela-ou-total",
+    "title": "Parcela pequena, custo total maior?",
+    "category": "Dívidas",
+    "level": "Intermediário",
+    "minutes": 3,
+    "body": "Uma parcela mais baixa pode facilitar o fluxo mensal. Um prazo maior pode aumentar o total pago. Compare os dois efeitos antes de avaliar uma proposta.\n## Exemplo com a mesma entrada\nImagine duas opções para o mesmo valor liberado. A primeira cobra 12 parcelas de R$ 260, total de R$ 3.120. A segunda cobra 18 parcelas de R$ 190, total de R$ 3.420. A segunda libera R$ 70 por mês durante os primeiros 12 meses e custa R$ 300 a mais no total.\n## Verifique as condições\nCompare CET, entrada, prazo e multas. Confira também o valor líquido que você recebe. Use a parcela para avaliar o orçamento e o total para entender o impacto da operação completa.\n## Coloque em prática\nEscolha um limite mensal hipotético e marque quais opções cabem. Se nenhuma couber, calcule quanto seria possível comprometer sem sacrificar as despesas essenciais."
+  },
+  {
+    "key": "investir",
+    "title": "Investir começa com planejamento",
+    "category": "Investimentos",
+    "level": "Básico",
+    "minutes": 4,
+    "body": "Escolher um investimento começa pelo objetivo, pelo prazo e pelo risco que você consegue assumir. Essas perguntas dão sentido às comparações de rentabilidade.\n## Faça três perguntas\n- Quando vou precisar do dinheiro?\n- Como funciona o resgate e em quanto tempo recebo?\n- O valor pode cair ou ficar indisponível quando eu precisar?\nCompare também custos e os tributos que se aplicam à situação.\n## Exemplo de dois objetivos\nUma mudança daqui a três meses e uma meta de longo prazo têm exigências diferentes. Se o dinheiro precisa estar disponível em data certa, atrasos ou perdas no resgate podem afetar a mudança. Em prazos maiores, você pode analisar cenários diferentes de oscilação e recuperação.\n## Coloque em prática\nListe duas metas com datas distintas. Para cada uma, escreva qual prazo de resgate seria aceitável e como reagiria se o valor caísse perto da data de uso."
+  },
+  {
+    "key": "investimentos-renda-fixa",
+    "title": "Renda fixa e renda variável",
+    "category": "Investimentos",
+    "level": "Básico",
+    "minutes": 4,
+    "body": "Em renda fixa, a regra de remuneração é definida no início. Na renda variável, o retorno depende do desempenho do ativo e pode mudar ao longo do tempo. As duas têm riscos.\n## Entenda as diferenças\nUm título de renda fixa pode combinar taxa, índice e vencimento. Vendas antecipadas podem ocorrer por um preço diferente do esperado. Na renda variável, o preço pode oscilar conforme o mercado e as condições do negócio.\n## Exemplo de prazo\nImagine um título comprado para vencer em três anos. Uma venda após seis meses pode ocorrer em condições diferentes das previstas para o vencimento. Em uma ação, a mudança de preço também pode produzir ganho ou perda no período.\n## Coloque em prática\nCompare dois produtos fictícios. Identifique quem promete pagar, como o retorno é calculado, se existe prazo de vencimento e o que pode acontecer se você precisar sair antes."
+  },
+  {
+    "key": "investimentos-diversificacao",
+    "title": "Como funciona a diversificação",
+    "category": "Investimentos",
+    "level": "Intermediário",
+    "minutes": 3,
+    "body": "Diversificar é distribuir o dinheiro entre riscos diferentes. A ideia é reduzir o impacto que um único ativo, emissor ou setor pode ter no resultado.\n## Exposição em comum\nTer vários produtos pode manter uma concentração se todos dependerem do mesmo emissor ou responderem de forma parecida à economia. Observe o que cada produto tem por trás e quais riscos eles compartilham.\n## Exemplo de impacto\nSe uma posição representa 100% de R$ 1.000 e cai 20%, a queda é de R$ 200. Se ela representa só metade e o restante fica estável no mesmo período, a queda total é de R$ 100. O resultado muda se as duas posições caírem juntas.\n## Coloque em prática\nDesenhe uma carteira fictícia com três posições. Teste a queda de uma posição e depois de duas ao mesmo tempo. Compare o efeito no total e identifique onde ficou a concentração."
+  },
+  {
+    "key": "investimentos-custos",
+    "title": "Rentabilidade bruta e líquida",
+    "category": "Investimentos",
+    "level": "Intermediário",
+    "minutes": 3,
+    "body": "O rendimento bruto é medido antes de custos e tributos. Comparar o valor líquido ajuda a entender quanto sobra para o seu objetivo.\n## O que colocar na conta\nCompare alternativas com o mesmo valor inicial, prazo e datas de entrada e saída. Verifique taxas, tributos aplicáveis e condições de resgate. Compare o valor líquido com a inflação do mesmo período se quiser estimar o ganho real.\n## Exemplo com R$ 1.000\nEm um cenário hipotético, a opção A rende R$ 100 brutos e tem R$ 25 em custos e tributos, sobrando R$ 75 de ganho. A opção B rende R$ 90 brutos e tem R$ 10 de descontos, sobrando R$ 80. O resultado líquido depende dos valores efetivamente cobrados.\n## Coloque em prática\nMonte uma tabela com capital inicial, rendimento bruto, custos e saldo líquido. Aplique a tabela a duas opções fictícias com o mesmo prazo."
+  },
+  {
+    "key": "impostos-no-dia-a-dia",
+    "title": "Como os impostos aparecem no dia a dia",
+    "category": "Impostos",
+    "level": "Básico",
+    "minutes": 4,
+    "body": "Do contracheque à nota fiscal, os tributos podem aparecer de formas diferentes. Entender onde eles entram ajuda a ler documentos e planejar o orçamento.\n## Observe como a cobrança aparece\n- Em compras, o preço final pode incluir tributos sobre o consumo.\n- No contracheque, o imposto de renda pode aparecer como uma retenção, conforme a situação.\n- Em alguns casos, o contribuinte recebe uma cobrança própria, como o IPTU de um imóvel.\n## Exemplo de planejamento\nEm um contracheque hipotético, R$ 3.000 brutos viram R$ 2.650 líquidos depois de todos os descontos. Use R$ 2.650 como referência para o orçamento. Os R$ 350 podem incluir deduções de naturezas diferentes. Confira a descrição de cada linha antes de classificar o desconto.\n## Coloque em prática\nPegue uma nota fiscal e um comprovante de pagamento fictício. Identifique o valor final, procure informações sobre tributos e marque quais valores realmente precisariam entrar no orçamento."
+  },
+  {
+    "key": "impostos-declaracao-ir",
+    "title": "Declarar e pagar Imposto de Renda",
+    "category": "Impostos",
+    "level": "Básico",
+    "minutes": 4,
+    "body": "Entenda por que a obrigação de entregar a declaração e o resultado do cálculo do Imposto de Renda são duas verificações diferentes.\n## Confira o ano certo\nO ano-calendário é o período dos rendimentos e dos fatos que entram na declaração. Consulte os critérios da Receita Federal para a declaração correspondente. A obrigação de entregar pode depender de fatores além do salário, como bens ou determinadas operações.\n## Exemplo de ajuste anual\nImagine que o cálculo anual indique R$ 900 de imposto e que R$ 1.100 já tenham sido retidos. Nesse cenário simplificado, a diferença de R$ 200 seria um valor a restituir. Se apenas R$ 700 tivessem sido retidos, a diferença de R$ 200 seria um valor a pagar.\n## Coloque em prática\nAbra o portal Meu Imposto de Renda da Receita Federal. Localize o ano da declaração e a lista de critérios de obrigatoriedade. Anote quais documentos você consultaria para verificar uma situação fictícia."
+  },
+  {
+    "key": "impostos-organizar-documentos",
+    "title": "Como organizar os documentos para declarar",
+    "category": "Impostos",
+    "level": "Básico",
+    "minutes": 4,
+    "body": "Uma pasta organizada por ano e por tipo de documento facilita conferir o que foi informado e localizar comprovantes quando necessário.\n## Reúna os comprovantes\n- Informes de rendimentos das fontes pagadoras e instituições financeiras.\n- Recibos, comprovantes de pagamento e documentos de despesas que sejam relevantes para a declaração.\n- Registros de compra ou venda de bens, quando aplicável.\n## Exemplo de revisão\nSe uma despesa aparece na declaração pré-preenchida por R$ 600 e seus registros mostram R$ 450, confira as datas e o documento do prestador. Verifique se houve reembolso ou se parte do valor pertence a outro ano antes de corrigir a informação.\n## Coloque em prática\nMonte uma pasta fictícia com subpastas para rendimentos, despesas e bens. Dê a cada arquivo um nome que inclua data, origem e tipo de documento. Guarde documentos reais em um local com acesso protegido."
+  },
+  {
+    "key": "impostos-deducoes",
+    "title": "Deduções legais e desconto simplificado",
+    "category": "Impostos",
+    "level": "Intermediário",
+    "minutes": 4,
+    "body": "A declaração pode calcular o imposto com deduções legais ou com desconto simplificado. Entender a diferença ajuda a ler o resultado apresentado pelo sistema oficial.\n## Como as opções funcionam\nAs deduções legais dependem das despesas permitidas, dos comprovantes e dos limites aplicáveis. O desconto simplificado substitui essas deduções por um desconto calculado conforme as regras do exercício. Confira as condições do ano no portal da Receita Federal.\n## Exemplo de comparação\nEm um cenário fictício, os gastos comprovados somam R$ 3.000, mas apenas R$ 2.000 entram nas deduções permitidas. A comparação deve considerar os R$ 2.000 e o desconto que o sistema calcula, além do resultado final de imposto de cada opção.\n## Coloque em prática\nCrie uma lista de despesas fictícias e separe valor pago, valor reembolsado e documento disponível. Consulte as orientações oficiais para identificar quais dados seriam necessários antes de comparar as opções."
+  },
+  {
+    "key": "empreender-preco",
+    "title": "Como calcular o preço de uma venda",
+    "category": "Empreendedorismo",
+    "level": "Básico",
+    "minutes": 4,
+    "body": "Um preço precisa levar em conta os custos de cada venda e ajudar a cobrir as despesas fixas do negócio. Comece calculando quanto sobra por unidade vendida.\n## Liste os custos da unidade\nInclua ingredientes ou materiais, embalagem, comissões e outras despesas que aconteçam a cada venda. Se houver tributos ou taxas variáveis aplicáveis, inclua-os no cálculo. Separe os compromissos fixos do mês para avaliar depois de estimar as vendas.\n## Exemplo de contribuição por venda\nUm produto vendido por R$ 25 tem R$ 14 em custos variáveis. Cada venda contribui com R$ 11 para as despesas fixas e o resultado. Com R$ 330 de despesas fixas, são necessárias 30 unidades para cobri-las nesse cenário.\n## Coloque em prática\nEscolha um produto fictício e compare a contribuição por venda em dois preços. Depois simule um aumento no custo da embalagem e veja quantas unidades precisaria vender para cobrir os custos fixos."
+  },
+  {
+    "key": "empreender-fluxo-caixa",
+    "title": "Fluxo de caixa para pequenos negócios",
+    "category": "Empreendedorismo",
+    "level": "Básico",
+    "minutes": 4,
+    "body": "O fluxo de caixa registra quando o dinheiro entra e sai. A data de recebimento pode decidir se há saldo suficiente para pagar uma conta.\n## Organize por data\nAnote o saldo inicial, os recebimentos previstos e os pagamentos com vencimento. Marque o que já aconteceu e revise o restante. Em vendas parceladas ou por cartão, use a data estimada em que o dinheiro estará disponível.\n## Exemplo de descasamento\nSeu caixa começa com R$ 400. Um fornecedor recebe R$ 650 na segunda e uma venda de R$ 900 entra na quinta. O saldo projetado fica R$ 250 abaixo de zero na segunda, mesmo que termine a semana positivo. O calendário ajuda a enxergar a falta antes do vencimento.\n## Coloque em prática\nMonte uma tabela de sete dias. Lance as datas dos pagamentos e recebimentos e calcule o saldo ao fim de cada dia. Identifique quando seria necessário antecipar cobranças, renegociar prazos ou usar uma reserva."
+  },
+  {
+    "key": "empreender-financas-separadas",
+    "title": "Separe as contas da casa e do negócio",
+    "category": "Empreendedorismo",
+    "level": "Básico",
+    "minutes": 4,
+    "body": "Separar o dinheiro pessoal do dinheiro do negócio ajuda a acompanhar os custos e a saber quanto pode ser retirado sem deixar contas em aberto.\n## Registre a finalidade de cada saída\nAnote vendas, pagamentos do negócio e retiradas pessoais em categorias distintas. Quando colocar dinheiro pessoal na atividade, registre o aporte. Se usar controles ou contas separados, fica mais fácil identificar de onde veio cada movimentação.\n## Exemplo de retirada\nO caixa do negócio tem R$ 1.800. Há R$ 1.200 em pagamentos próximos e você quer manter R$ 300 de reserva operacional. Nesse cenário, R$ 300 ficam disponíveis para uma retirada sem comprometer os valores já planejados.\n## Coloque em prática\nClassifique os últimos cinco movimentos de um negócio fictício como venda, despesa do negócio, aporte ou retirada. Faça uma revisão semanal e confira quanto ainda está comprometido."
+  },
+  {
+    "key": "empreender-primeiros-passos-mei",
+    "title": "MEI: primeiros passos e obrigações",
+    "category": "Empreendedorismo",
+    "level": "Intermediário",
+    "minutes": 4,
+    "body": "O Microempreendedor Individual é uma forma de formalizar atividades que atendem às regras da modalidade. Consulte o Portal do Empreendedor antes de abrir ou alterar um cadastro.\n## O que verificar antes\n- Se a atividade pretendida está permitida.\n- Se você atende às condições de enquadramento aplicáveis.\n- Quais obrigações fiscais, de registro e de emissão de documentos se aplicam ao seu caso.\n## Exemplo de organização\nImagine uma pessoa que se formalizou como MEI e controla as vendas mensalmente. Ela registra a receita bruta, acompanha os pagamentos do DAS e reúne os dados para a declaração anual DASN-Simei. Os comprovantes ficam separados dos registros pessoais.\n## Coloque em prática\nConsulte no Portal do Empreendedor as páginas da atividade permitida, do DAS e da declaração anual. Anote as obrigações aplicáveis ao cenário fictício e quais controles mensais ajudariam a cumpri-las."
+  }
+]

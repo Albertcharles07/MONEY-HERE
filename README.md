@@ -31,10 +31,9 @@ Em outro terminal:
 ```powershell
 Invoke-RestMethod http://localhost:8080/actuator/health
 Invoke-RestMethod http://localhost:8080/api/public/content/orcamento-50-30-20
-Invoke-RestMethod http://localhost:8080/api/public/tracks
 ```
 
-O primeiro comando deve retornar `UP` e os demais consultam o catálogo no Neon. Confira o histórico de migrações em `flyway_schema_history` na mesma branch. Para incluir o SMTP no health check, defina `MAIL_HEALTH_ENABLED=true` com um servidor de e-mail configurado.
+O primeiro comando deve retornar `UP` e o segundo consulta o catálogo no Neon. Confira o histórico de migrações em `flyway_schema_history` na mesma branch. Para incluir o SMTP no health check, defina `MAIL_HEALTH_ENABLED=true` com um servidor de e-mail configurado.
 
 ### Criar a primeira conta de administrador
 
@@ -69,7 +68,7 @@ Entre com a conta criada e abra **Administração** no menu ou a rota `/admin`. 
 
 ### Recuperação de senha por e-mail
 
-O cadastro e o login exigem somente um e-mail em formato válido e uma senha. Para enviar o link de recuperação de senha de contas comuns, configure SMTP. O link expira em 30 minutos.
+O cadastro e o login exigem somente um e-mail em formato válido e uma senha. Para enviar o link de recuperação de senha de contas comuns, configure SMTP. O link expira em 30 minutos. O script `backend/start-neon.ps1` lê as variáveis abaixo do ambiente ou do `.env.local` na raiz. No arquivo, use `NOME=valor` para cada configuração. Use como `PUBLIC_URL` o endereço do frontend que o destinatário consegue abrir.
 
 ```powershell
 $env:MAIL_HOST="smtp.seuprovedor.com"
@@ -128,7 +127,7 @@ Conecte o computador e o celular ao mesmo Wi-Fi. Inicie o backend com o script e
 | GET/POST/DELETE | `/api/favorites[/{key}]` | Favoritos |
 | GET | `/api/public/content` | Artigos cadastrados no PostgreSQL |
 | GET | `/api/public/content/{key}` | Artigo individual |
-| GET | `/api/public/tracks` | Trilhas |
+| GET | `/api/public/tracks` | Trilhas, com autenticação JWT |
 | GET/POST | `/api/admin/users` | Lista contas e cria usuários comuns |
 | PUT | `/api/admin/users/{id}/status` | Desativa ou reativa uma conta, inclusive de administrador secundário |
 | PUT | `/api/admin/users/{id}/role` | Altera o papel da conta |
@@ -170,39 +169,36 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\backend\start-neon.ps1
 
 O teste executa o Flyway no banco selecionado e verifica BCrypt, cadastro sem confirmação, login JWT e autorização do painel administrativo. Cria uma meta pela API e confere a leitura pela API e pelo SQL. As linhas de teste são revertidas ao final da transação. Sequências PostgreSQL podem avançar mesmo com rollback.
 
-Os testes frontend cobrem juros, reserva, dívida, aposentadoria e crédito. Nenhum dos dois manifests npm define o script build. Entrega real de e-mail e execução em Android/iOS dependem de testes próprios.
+Os testes frontend cobrem juros, reserva, dívida, aposentadoria e crédito. Nenhum dos dois manifests npm define o script build. O recebimento do e-mail de recuperação foi confirmado em teste manual com SMTP. A execução em Android e iOS deve ser validada nos dispositivos da apresentação.
 
 ## Matriz de requisitos e limites
 
 | Recurso | Situação |
 |---|---|
-| Expo SDK 54 + React Native + web | Implementado em código; depende de instalação |
-| 5+ telas, navegação e responsividade por flex-wrap | Implementado |
-| Dark/light persistente | Implementado |
-| JWT Spring Security, API REST | Implementado |
-| AsyncStorage e Context API | Implementado |
-| PostgreSQL relacional + Flyway (inclui artigos e trilhas) | Configurado para Neon |
-| CRUD de metas e orçamento | Implementado |
-| Trilhas, progresso, favoritos, XP por módulo | MVP implementado |
-| 6 categorias de simuladores | Cálculos educativos simplificados; dívida não implementa SAC/bola de neve, comparativo não lê taxas reais |
-| Recuperação de senha por SMTP | Opcional para contas comuns |
-| Onboarding de 3 passos | Perfil editável, onboarding guiado **não implementado** |
-| Cookies, WCAG AA formal, SEO/sitemap/OG, Core Web Vitals | **Não auditados / não implementados integralmente** |
-| HTTPS em produção | **Exige hospedagem TLS; HTTP somente desenvolvimento local** |
-| LGPD | Excluir conta, rascunhos legais; **precisa avaliação jurídica e política real** |
-| Menores de idade | **Antes de lançar**, implantar consentimento parental verificável, adequação etária e controles de privacidade |
+| React Native com Expo SDK 54 | Aplicativo configurado para Android, iOS e web. A compilação web foi validada. |
+| Telas e navegação | Mais de cinco telas, incluindo login, com navegação pelo Expo Router e layout responsivo. |
+| Tema e sessão | Tema claro/escuro persistente. React Context gerencia a sessão e o AsyncStorage guarda a preferência de tema e o token localmente. |
+| API REST e autenticação | Spring Boot com Spring Security, login por e-mail e senha, hash BCrypt e JWT para rotas privadas. |
+| Banco de dados | PostgreSQL hospedado no Neon, com migrações Flyway para contas, metas, orçamento, progresso e conteúdo educativo. |
+| Catálogo | 28 artigos no catálogo padrão, em sete categorias, com busca, filtros, exemplos e exercícios. Os artigos são públicos. |
+| Trilhas e favoritos | Trilhas exigem login. O aplicativo registra a abertura e a conclusão de módulos, atribui 25 XP por conclusão e permite salvar artigos como favoritos. |
+| Metas e orçamento | Cadastro, consulta, edição e exclusão dos próprios registros. A interface formata valores em reais e a API oferece consulta por ID e resumo do orçamento com filtro mensal opcional. |
+| Simuladores | Seis opções educativas para contas autenticadas, com cálculos de juros compostos, reserva, dívidas, aposentadoria, comparativo de investimentos e custo do crédito. |
+| Recuperação de senha | Contas comuns podem solicitar um link por SMTP quando o remetente está configurado. O link expira em 30 minutos. O recebimento foi confirmado em um teste manual. |
+| Administração de contas | Cadastro e pesquisa de usuários, alteração de permissões, ativação, desativação, redefinição de senha e exclusão de contas elegíveis. A conta do administrador principal é protegida. |
+| Perfil, privacidade e termos | Edição de perfil, troca de senha, exclusão de conta comum e páginas de Termos de Uso e Política de Privacidade da versão acadêmica. |
 
-**Segurança de produção:** usar HTTPS, CORS estrito, rate limiting, política para dados de menores, consentimento, gestão de sessão, monitoramento, backup, segregação de ambientes e armazenamento de token via SecureStore no mobile em vez de AsyncStorage. O MVP guarda JWT em AsyncStorage para demonstrar o requisito acadêmico. Sessão JWT expira após 30 minutos de emissão (não há renovação nem expiração real por inatividade). Não inserir dados bancários reais nem números de cartões.
+O JWT vence 30 minutos após a emissão. A execução local descrita neste README usa HTTP.
 
 ## Entrega em equipe
 
-| Integrante | RM | Contribuição verificável |
-|---|---|---|
-| Charles Elias de Araujo | 1143175185 | Ambiente, execução da API, testes funcionais e publicação no GitHub |
-| Carlos Daniel de Souza Gomes | 1143058270 | Banco de dados no Neon, migrações, autenticação JWT e administração de contas |
-| Lucas Rodrigues de Magalhaes | 1142712305 | Endpoints REST de metas e orçamento e resumo financeiro no backend |
+| Integrante | RM | Contribuição verificável | Commits publicados |
+|---|---|---|---|
+| Charles Elias de Araujo | 1143175185 | Ambiente, execução da API, testes funcionais e publicação no GitHub | [`cc5047f`](https://github.com/Albertcharles07/MONEY-HERE/commit/cc5047f) |
+| Carlos Daniel de Souza Gomes | 1143058270 | Banco de dados no Neon, migrações, autenticação JWT e administração de contas | [`6f044ff`](https://github.com/Albertcharles07/MONEY-HERE/commit/6f044ff) — registro da contribuição individual. [`4a898e8`](https://github.com/Albertcharles07/MONEY-HERE/commit/4a898e8) — correção da atribuição de banco de dados, autenticação e administração. |
+| Lucas Rodrigues de Magalhaes | 1142712305 | Endpoints REST de metas e orçamento, resumo financeiro e testes da API | [`f0442aa`](https://github.com/Albertcharles07/MONEY-HERE/commit/f0442aa), [`cf165d3`](https://github.com/Albertcharles07/MONEY-HERE/commit/cf165d3) e [`691bede`](https://github.com/Albertcharles07/MONEY-HERE/commit/691bede) |
 
-Cada integrante deve fazer commits com mudanças reais. Exemplo de distribuição: backend/auth, interface e acessibilidade, banco e Flyway, simuladores e testes, documentação e publicação. **Não fabricar commits**. Antes de submeter, validar execução, prints e testes e publicar no GitHub com histórico legítimo.
+Cada integrante deve registrar suas mudanças no Git. Antes da entrega, confira o histórico no GitHub, valide os fluxos no ambiente da apresentação e reúna as evidências de execução e testes.
 
 ## Referências técnicas
 
@@ -212,6 +208,7 @@ Cada integrante deve fazer commits com mudanças reais. Exemplo de distribuiçã
 - PostgreSQL: https://www.postgresql.org/docs/
 
 Projeto educativo — taxas e exemplos são ilustrativos. Não é aconselhamento financeiro.
+
 ## Contribuições individuais
 
 ### Charles Elias de Araujo — RM: 1143175185

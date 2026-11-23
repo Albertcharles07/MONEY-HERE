@@ -126,10 +126,13 @@ function Convert-NeonConnection([string]$Value, [string]$Name) {
     }
 }
 
+$mailSettings = @('MAIL_HOST', 'MAIL_PORT', 'MAIL_USERNAME', 'MAIL_PASSWORD', 'MAIL_FROM',
+    'MAIL_AUTH', 'MAIL_TLS', 'MAIL_HEALTH_ENABLED', 'PUBLIC_URL')
 $values = @{}
 foreach ($line in [IO.File]::ReadAllLines((Resolve-Path -LiteralPath $EnvFile).Path)) {
-    if ($line -match '^\s*(?:export\s+)?(DATABASE_URL(?:_UNPOOLED)?|JWT_SECRET)\s*=\s*(.*?)\s*$') {
+    if ($line -match '^\s*(?:export\s+)?([A-Z_]+)\s*=\s*(.*?)\s*$') {
         $key, $value = $Matches[1], $Matches[2]
+        if ($key -notin $mailSettings -and $key -notin @('DATABASE_URL', 'DATABASE_URL_UNPOOLED', 'JWT_SECRET')) { continue }
         if ($value -match '^"(.*)"$' -or $value -match "^'(.*)'$") {
             $value = $Matches[1]
         }
@@ -188,6 +191,11 @@ $settings = @{
     SPRING_FLYWAY_PASSWORD = $direct.Password
     JWT_SECRET = $jwt
     MONEY_HERE_LOCAL_LAN = 'true'
+}
+foreach ($key in $mailSettings) {
+    if ($values.ContainsKey($key) -and -not [Environment]::GetEnvironmentVariable($key)) {
+        $settings[$key] = $values[$key]
+    }
 }
 if ($DefaultAdmin) {
     if ($Mode -ne 'Start') { throw 'Use -DefaultAdmin somente ao iniciar o backend.' }

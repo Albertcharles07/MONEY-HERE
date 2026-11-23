@@ -22,7 +22,8 @@ import java.util.*;
  private void validate(String secret){if(secret.getBytes(StandardCharsets.UTF_8).length<32)throw new IllegalArgumentException("JWT_SECRET precisa ter pelo menos 32 bytes");}
  @Bean SecurityFilterChain chain(HttpSecurity http) throws Exception {
   return http.csrf(c->c.disable()).cors(c->{}).sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-   .authorizeHttpRequests(a->a.requestMatchers("/api/auth/**","/api/public/**","/actuator/health").permitAll()
+   .authorizeHttpRequests(a->a.requestMatchers("/api/auth/**","/actuator/health").permitAll()
+   .requestMatchers(HttpMethod.GET,"/api/public/content","/api/public/content/*").permitAll()
    .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
    .requestMatchers(HttpMethod.GET,"/api/me").authenticated()
    .requestMatchers(HttpMethod.PUT,"/api/me/password").authenticated()
