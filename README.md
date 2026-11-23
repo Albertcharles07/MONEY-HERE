@@ -244,3 +244,14 @@ Projeto educativo — taxas e exemplos são ilustrativos. Não é aconselhamento
 - Criação dos endpoints `GET /api/goals/{id}` e `GET /api/budget/{id}`, que retornam um registro específico apenas para o usuário dono dele (404 para registros de outros usuários) ([controller da API](backend/src/main/java/com/moneyhere/ApiController.java)).
 - Refatoração das buscas por id no controller, reaproveitando o mesmo método na consulta, na edição e na exclusão.
 - Criação do endpoint `GET /api/budget/summary`, que calcula receitas, despesas, saldo e gastos por categoria, com filtro opcional por mês (`?month=AAAA-MM`) e retorno 400 para mês inválido.
+
+### João Pedro Dias Araújo -- RM: 1143176420
+
+- Melhoria da tela **Meus favoritos** no frontend em React Native com Expo.
+- Adição de um indicador de carregamento enquanto o app busca os favoritos na API.
+- Exibição de uma mensagem de erro com o botão **Tentar novamente** quando a consulta falha.
+- Criação de um estado para a lista vazia, com o botão **Explorar conteúdos** que leva ao catálogo.
+- Atualização da lista na tela após a remoção de um favorito, com aviso quando a operação falha.
+- Reutilização dos componentes de interface do projeto para manter o padrão visual da tela.
+
+[Commit da implementação](https://github.com/Albertcharles07/MONEY-HERE/commit/fcd3d6d649e8a306ed24a9eb5d64f49c4fe6ffc4) · [Pull Request #1](https://github.com/Albertcharles07/MONEY-HERE/pull/1)
