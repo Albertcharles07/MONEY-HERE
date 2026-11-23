@@ -38,6 +38,39 @@ import java.math.*;
  @DeleteMapping("/goals/{id}") public ResponseEntity<Void> delGoal(@AuthenticationPrincipal Jwt jwt,@PathVariable Long id){Goal g=findGoal(jwt,id);goals.delete(g);return ResponseEntity.noContent().build();}
  private Map<String,Object> entry(Entry e){return Map.of("id",e.id,"title",e.title,"category",e.category,"kind",e.kind,"amount",e.amount,"entryDate",e.entryDate);}
  @GetMapping("/budget") public List<Map<String,Object>> budget(@AuthenticationPrincipal Jwt jwt){return entries.findByUserIdOrderByEntryDateDescIdDesc(user(jwt).id).stream().map(this::entry).toList();}
+ // Resumo do orcamento: total de receitas, despesas, saldo e gastos por categoria.
+ // O parametro month (AAAA-MM) e opcional; sem ele, considera todos os lancamentos.
+ @GetMapping("/budget/summary") public Map<String,Object> budgetSummary(@AuthenticationPrincipal Jwt jwt,@RequestParam(required=false) String month){
+  Long userId=user(jwt).id;
+  List<Entry> list;
+  if(month==null||month.isBlank()){
+   list=entries.findByUserIdOrderByEntryDateDescIdDesc(userId);
+  }else{
+   YearMonth ym;
+   try{ym=YearMonth.parse(month.trim());}
+   catch(DateTimeException ex){throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Mês inválido. Use o formato AAAA-MM.");}
+   list=entries.findByUserIdAndEntryDateBetween(userId,ym.atDay(1),ym.atEndOfMonth());
+  }
+  BigDecimal income=BigDecimal.ZERO;
+  BigDecimal expense=BigDecimal.ZERO;
+  Map<String,BigDecimal> byCategory=new TreeMap<>();
+  for(Entry e:list){
+   if("INCOME".equals(e.kind)){
+    income=income.add(e.amount);
+   }else{
+    expense=expense.add(e.amount);
+    byCategory.merge(e.category,e.amount,BigDecimal::add);
+   }
+  }
+  Map<String,Object> m=new LinkedHashMap<>();
+  m.put("month",month==null||month.isBlank()?null:month.trim());
+  m.put("income",income);
+  m.put("expense",expense);
+  m.put("balance",income.subtract(expense));
+  m.put("entries",list.size());
+  m.put("expensesByCategory",byCategory);
+  return m;
+ }
  // Busca um lancamento do orcamento pelo id, restrito ao usuario autenticado
  @GetMapping("/budget/{id}") public Map<String,Object> getEntry(@AuthenticationPrincipal Jwt jwt,@PathVariable Long id){return entry(findEntry(jwt,id));}
  private Entry findEntry(Jwt jwt,Long id){return entries.findByIdAndUserId(id,user(jwt).id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));}
