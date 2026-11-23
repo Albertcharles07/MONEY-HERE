@@ -229,15 +229,11 @@ Projeto educativo — taxas e exemplos são ilustrativos. Não é aconselhamento
 
 ### Carlos Daniel de Souza Gomes — RM: 1143058270
 
-- Desenvolvimento do backend do Money Here em Java 21 com Spring Boot.
-- Configuração do projeto Maven, das dependências e do script de inicialização da API no Windows (`backend/`).
-- Implementação dos endpoints REST de cadastro, login, perfil, metas financeiras, lançamentos e favoritos (`backend/src/main/java/com/moneyhere/`).
-- Implementação das operações de cadastro, consulta, atualização e exclusão de metas e lançamentos, com acesso limitado à conta dona dos dados.
-- Implementação da autenticação com JWT, proteção das rotas com Spring Security e armazenamento de senhas com BCrypt.
-- Implementação da gestão de contas, com alteração de permissões, redefinição de senhas temporárias e proteção do administrador principal contra ações de outros administradores.
-- Desenvolvimento das rotas de consulta de artigos e trilhas e do registro de visitas e conclusões de módulos.
-- Modelagem das entidades e dos repositórios de usuários, metas, orçamento, progresso e favoritos com Spring Data JPA.
-- Configuração da conexão com o PostgreSQL no Neon e da execução das migrações pelo Flyway (`backend/src/main/resources/`).
-- Criação das migrações SQL para tabelas, chaves estrangeiras, conteúdo educativo e controle de sessões (`backend/src/main/resources/db/migration/`).
-- Desenvolvimento de testes unitários para autenticação, validação de cadastro e permissões administrativas (`backend/src/test/java/com/moneyhere/`).
-- Preparação de testes de integração com PostgreSQL para cadastro, login, consulta de metas e revogação de sessão.
+- Responsável pelo banco de dados, pela autenticação e pela administração de contas do Money Here.
+- Configuração e manutenção do banco PostgreSQL hospedado no Neon. Na equipe, o acesso direto ao banco e a gestão das credenciais ficaram sob minha responsabilidade.
+- Modelagem das tabelas e dos relacionamentos de usuários, metas, lançamentos, favoritos, progresso e conteúdo educativo ([migrações SQL](backend/src/main/resources/db/migration)).
+- Configuração da conexão da API com o PostgreSQL por variáveis de ambiente e do Flyway para aplicar as migrações ([configuração do banco](backend/src/main/resources/application.properties)).
+- Implementação do cadastro e do login com JWT, armazenamento de senhas com BCrypt e proteção das rotas privadas com Spring Security ([serviço de autenticação](backend/src/main/java/com/moneyhere/AuthService.java) e [configuração de segurança](backend/src/main/java/com/moneyhere/SecurityConfig.java)).
+- Implementação das regras de administração de contas para alterar permissões, definir senhas temporárias, desativar, reativar e excluir contas elegíveis ([API administrativa](backend/src/main/java/com/moneyhere/AdminController.java)).
+- Proteção da conta do administrador principal contra desativação, exclusão, redefinição de senha e remoção de privilégios por outros administradores ([testes da conta principal](backend/src/test/java/com/moneyhere/PrimaryAdminTest.java)).
+- Preparação de testes unitários e de integração para autenticação, proteção da conta principal, revogação de sessões e acesso aos dados no PostgreSQL ([testes](backend/src/test/java/com/moneyhere)).
