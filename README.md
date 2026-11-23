@@ -122,6 +122,7 @@ Conecte o computador e o celular ao mesmo Wi-Fi. Inicie o backend com o script e
 | PUT | `/api/me/password` | Trocar senha |
 | GET/POST/PUT/DELETE | `/api/goals[/{id}]` | CRUD de metas |
 | GET/POST/PUT/DELETE | `/api/budget[/{id}]` | CRUD de orçamento |
+| GET | `/api/budget/summary[?month=AAAA-MM]` | Resumo do orçamento: receitas, despesas, saldo e despesas por categoria |
 | GET/POST | `/api/progress` | Lista aberturas e conclusões. Exige abertura antes de concluir. |
 | POST | `/api/progress/open` | Registra abertura de um módulo |
 | GET/POST/DELETE | `/api/favorites[/{key}]` | Favoritos |
@@ -202,7 +203,7 @@ Os testes frontend cobrem juros, reserva, dívida, aposentadoria e crédito. Nen
 |---|---|---|
 | Charles Elias de Araujo | 1143175185 | Ambiente, execução da API, testes funcionais e publicação no GitHub |
 | Carlos Daniel de Souza Gomes | 1143058270 | Banco de dados no Neon, migrações, autenticação JWT e administração de contas |
-| Lucas Rodrigues | 1142712305 | Endpoints REST de metas e orçamento no backend |
+| Lucas Rodrigues | 1142712305 | Endpoints REST de metas e orçamento e resumo financeiro no backend |
 
 Cada integrante deve fazer commits com mudanças reais. Exemplo de distribuição: backend/auth, interface e acessibilidade, banco e Flyway, simuladores e testes, documentação e publicação. **Não fabricar commits**. Antes de submeter, validar execução, prints e testes e publicar no GitHub com histórico legítimo.
 
@@ -245,3 +246,4 @@ Projeto educativo — taxas e exemplos são ilustrativos. Não é aconselhamento
 - Responsável pelo backend da API REST de metas e orçamento.
 - Criação dos endpoints `GET /api/goals/{id}` e `GET /api/budget/{id}`, que retornam um registro específico apenas para o usuário dono dele (404 para registros de outros usuários) ([controller da API](backend/src/main/java/com/moneyhere/ApiController.java)).
 - Refatoração das buscas por id no controller, reaproveitando o mesmo método na consulta, na edição e na exclusão.
+- Criação do endpoint `GET /api/budget/summary`, que calcula receitas, despesas, saldo e gastos por categoria, com filtro opcional por mês (`?month=AAAA-MM`) e retorno 400 para mês inválido.
