@@ -226,3 +226,37 @@ Projeto educativo — taxas e exemplos são ilustrativos. Não é aconselhamento
 - Testes de criação, edição e exclusão de metas.
 - Testes de receitas e despesas.
 - Inicialização do Git, configuração do repositório remoto e publicação do projeto no GitHub.
+
+#### Minha contribuição no backend
+
+Fui responsável pelo desenvolvimento do backend do Money Here. Desenvolvi a API em Java 21 com Spring Boot, organizei a persistência no PostgreSQL e implementei as regras de autenticação e administração de contas.
+
+##### `backend/`
+
+- Configurei o projeto Maven no [pom.xml](backend/pom.xml), com as dependências da API REST, do Spring Security, da validação de dados, do Spring Data JPA, do PostgreSQL, do Flyway e dos testes.
+- Organizei a execução no Windows com o [start-neon.ps1](backend/start-neon.ps1). O script lê as configurações locais, prepara as conexões do aplicativo e das migrações com o Neon e inicia o Spring Boot.
+
+##### `backend/src/main/java/com/moneyhere/`
+
+- Configurei o ponto de entrada da API em [MoneyHereApplication.java](backend/src/main/java/com/moneyhere/MoneyHereApplication.java). Em [ApiController.java](backend/src/main/java/com/moneyhere/ApiController.java), implementei as rotas de cadastro, login, perfil, favoritos e as quatro operações de metas e orçamento. A consulta, a edição e a exclusão de registros são limitadas à conta dona dos dados.
+- Implementei o fluxo de autenticação em [AuthService.java](backend/src/main/java/com/moneyhere/AuthService.java) e [SecurityConfig.java](backend/src/main/java/com/moneyhere/SecurityConfig.java). A senha é armazenada com BCrypt, o login emite um JWT e a API verifica o token para liberar rotas protegidas. A recuperação por e-mail para contas comuns depende de SMTP configurado.
+- Implementei a administração de contas em [AdminController.java](backend/src/main/java/com/moneyhere/AdminController.java) e [AdminBootstrap.java](backend/src/main/java/com/moneyhere/AdminBootstrap.java). O painel permite pesquisar contas, alterar permissões, desativar ou reativar usuários e definir senhas temporárias. A API impede que outros administradores alterem, desativem, redefinam a senha ou excluam a conta principal.
+- Implementei as consultas de artigos e trilhas em [ContentController.java](backend/src/main/java/com/moneyhere/ContentController.java) e o registro de visitas e conclusões de módulos em [ProgressController.java](backend/src/main/java/com/moneyhere/ProgressController.java).
+- Modelei usuários, metas, lançamentos, progresso e favoritos em [Model.java](backend/src/main/java/com/moneyhere/Model.java), com acesso ao banco pelos repositórios [Repos.java](backend/src/main/java/com/moneyhere/Repos.java), [Users.java](backend/src/main/java/com/moneyhere/Users.java) e [Tokens.java](backend/src/main/java/com/moneyhere/Tokens.java). Em [Dto.java](backend/src/main/java/com/moneyhere/Dto.java) e [ApiErrors.java](backend/src/main/java/com/moneyhere/ApiErrors.java), organizei a validação das entradas e as respostas de erro da API.
+
+##### `backend/src/main/resources/`
+
+- Configurei a leitura dos parâmetros do PostgreSQL e do Flyway por variáveis de ambiente em [application.properties](backend/src/main/resources/application.properties). Em [application.yml](backend/src/main/resources/application.yml), configurei as origens permitidas do frontend, o JWT, o serviço de e-mail e os endpoints de monitoramento.
+
+##### `backend/src/main/resources/db/migration/`
+
+- Escrevi as [migrações SQL versionadas](backend/src/main/resources/db/migration) para criar as tabelas e os relacionamentos de usuários, metas, lançamentos, progresso, favoritos e conteúdo educativo. As versões seguintes acrescentam papéis de acesso, troca de senha temporária, controle de sessões e a identificação da conta de administração principal.
+
+##### `backend/src/test/java/com/moneyhere/`
+
+- Organizei os testes unitários de autenticação e cadastro em [AuthServiceTest.java](backend/src/test/java/com/moneyhere/AuthServiceTest.java) e [DtoTest.java](backend/src/test/java/com/moneyhere/DtoTest.java). Em [PrimaryAdminTest.java](backend/src/test/java/com/moneyhere/PrimaryAdminTest.java), cobri o bloqueio de alterações e exclusão da conta principal e a gestão de administradores secundários.
+- Incluí em [NeonPersistenceTest.java](backend/src/test/java/com/moneyhere/NeonPersistenceTest.java) cenários de integração que exercitam os endpoints com PostgreSQL, incluindo cadastro, login, acesso às metas e revogação de sessão. A suíte de integração é executada quando o ambiente de teste do Neon está configurado.
+
+##### Como explicar o fluxo de uma meta
+
+Quando o usuário cria uma meta, o frontend envia `POST /api/goals` com o JWT. O Spring Security valida o token. O `ApiController` identifica o usuário, valida os dados recebidos e associa a meta à conta dele. O repositório `Goals` grava o registro na tabela `financial_goals` do PostgreSQL. Quando a tela consulta as metas, o backend retorna os registros daquela conta.
