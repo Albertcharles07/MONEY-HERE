@@ -186,9 +186,6 @@ Os testes frontend cobrem juros, reserva, dívida, aposentadoria e crédito. Nen
 | Trilhas, progresso, favoritos, XP por módulo | MVP implementado |
 | 6 categorias de simuladores | Cálculos educativos simplificados; dívida não implementa SAC/bola de neve, comparativo não lê taxas reais |
 | Recuperação de senha por SMTP | Opcional para contas comuns |
-| Google/Apple OAuth, 2FA | **Não implementado** |
-| Quiz completo, certificados, notificações push, ranking | **Não implementado** |
-| Vídeos, podcasts, newsletter, chat, download planilha | **Não implementado** |
 | Onboarding de 3 passos | Perfil editável, onboarding guiado **não implementado** |
 | Cookies, WCAG AA formal, SEO/sitemap/OG, Core Web Vitals | **Não auditados / não implementados integralmente** |
 | HTTPS em produção | **Exige hospedagem TLS; HTTP somente desenvolvimento local** |
