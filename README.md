@@ -200,7 +200,9 @@ Os testes frontend cobrem juros, reserva, dívida, aposentadoria e crédito. Nen
 
 | Integrante | RM | Contribuição verificável |
 |---|---|---|
-| A definir | A definir | A definir |
+| Charles Elias de Araujo | 1143175185 | Ambiente, execução da API, testes funcionais e publicação no GitHub |
+| Carlos Daniel de Souza Gomes | 1143058270 | Banco de dados no Neon, migrações, autenticação JWT e administração de contas |
+| Lucas Rodrigues | 1142712305 | Endpoints REST de metas e orçamento no backend |
 
 Cada integrante deve fazer commits com mudanças reais. Exemplo de distribuição: backend/auth, interface e acessibilidade, banco e Flyway, simuladores e testes, documentação e publicação. **Não fabricar commits**. Antes de submeter, validar execução, prints e testes e publicar no GitHub com histórico legítimo.
 
@@ -237,3 +239,9 @@ Projeto educativo — taxas e exemplos são ilustrativos. Não é aconselhamento
 - Implementação das regras de administração de contas para alterar permissões, definir senhas temporárias, desativar, reativar e excluir contas elegíveis ([API administrativa](backend/src/main/java/com/moneyhere/AdminController.java)).
 - Proteção da conta do administrador principal contra desativação, exclusão, redefinição de senha e remoção de privilégios por outros administradores ([testes da conta principal](backend/src/test/java/com/moneyhere/PrimaryAdminTest.java)).
 - Preparação de testes unitários e de integração para autenticação, proteção da conta principal, revogação de sessões e acesso aos dados no PostgreSQL ([testes](backend/src/test/java/com/moneyhere)).
+
+### Lucas Rodrigues — RM: 1142712305
+
+- Responsável pelo backend da API REST de metas e orçamento.
+- Criação dos endpoints `GET /api/goals/{id}` e `GET /api/budget/{id}`, que retornam um registro específico apenas para o usuário dono dele (404 para registros de outros usuários) ([controller da API](backend/src/main/java/com/moneyhere/ApiController.java)).
+- Refatoração das buscas por id no controller, reaproveitando o mesmo método na consulta, na edição e na exclusão.
