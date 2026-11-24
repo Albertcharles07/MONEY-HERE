@@ -6,11 +6,12 @@ import {useSession} from '../lib/session';
 
 type Account = {id: number; name: string; email: string; enabled: boolean; role: 'USER' | 'ADMIN'; primaryAdmin: boolean};
 type Accounts = {content: Account[]; first: boolean; last: boolean};
-type Action = 'status' | 'role' | 'password' | 'delete';
+type Action = 'edit' | 'status' | 'role' | 'password' | 'delete';
 
-const accountActions: readonly Action[] = ['status', 'role', 'password', 'delete'];
+const accountActions: readonly Action[] = ['edit', 'status', 'role', 'password', 'delete'];
 
 function actionLabel(account: Account, action: Action) {
+  if (action === 'edit') return 'Editar';
   if (action === 'password') return 'Resetar senha';
   if (action === 'delete') return 'Apagar usuário';
   if (action === 'role') return account.role === 'ADMIN' ? 'Remover acesso de admin' : 'Tornar administrador';
@@ -33,6 +34,8 @@ export default function Admin() {
   const [search, setSearch] = useState('');
   const [menu, setMenu] = useState<number>();
   const [selection, setSelection] = useState<{account: Account; action: Action}>();
+  const [editName, setEditName] = useState('');
+  const [editEmail, setEditEmail] = useState('');
   const [temporaryPassword, setTemporaryPassword] = useState('');
 
   useEffect(() => {
@@ -91,6 +94,8 @@ export default function Admin() {
     await mutate(async () => {
       if (action === 'delete') {
         await api(path, {method: 'DELETE'});
+      } else if (action === 'edit') {
+        await api(path, {method: 'PUT', body: JSON.stringify({name: editName.trim(), email: editEmail.trim()})});
       } else {
         const body = action === 'status' ? {enabled: !account.enabled}
           : action === 'role' ? {role: account.role === 'ADMIN' ? 'USER' : 'ADMIN'}
@@ -98,7 +103,8 @@ export default function Admin() {
         await api(path + '/' + action, {method: 'PUT', body: JSON.stringify(body)});
       }
       clearSelection();
-      setMessage(action === 'password' ? 'Senha temporária definida. A pessoa deverá trocá-la no próximo login.' : 'Alteração concluída.');
+      setMessage(action === 'password' ? 'Senha temporária definida. A pessoa deverá trocá-la no próximo login.' :
+        action === 'edit' ? 'Dados do usuário atualizados.' : 'Alteração concluída.');
     });
   }
 
@@ -141,9 +147,13 @@ export default function Admin() {
             {!account.primaryAdmin && menu === account.id && (
               <View accessibilityLabel="Opções do usuário" style={{flexDirection: 'row', flexWrap: 'wrap', gap: 8}}>
                 {accountActions
-                  .map(action => <Btn key={action} title={actionLabel(account, action)} secondary danger={action === 'delete'}
+                  .map(action => <Btn key={action} title={actionLabel(account, action)} secondary danger={action === 'delete'} disabled={busy}
                     onPress={() => {
                       clearSelection();
+                      if (action === 'edit') {
+                        setEditName(account.name);
+                        setEditEmail(account.email);
+                      }
                       setSelection({account, action});
                       setMenu(undefined);
                       setMessage('');
@@ -153,12 +163,19 @@ export default function Admin() {
             {!account.primaryAdmin && selection?.account.id === account.id && (
               <View style={{gap: 8}}>
                 <Txt bold>{actionLabel(account, selection.action)}</Txt>
+                {selection.action === 'edit' && <>
+                  <Input label="Nome" value={editName} onChangeText={setEditName} />
+                  <Input label="E-mail" value={editEmail} onChangeText={setEditEmail} keyboardType="email-address" />
+                  <Txt muted>Se o e-mail mudar, a pessoa precisará entrar novamente com o novo endereço.</Txt>
+                </>}
                 {selection.action === 'password' && <Input label="Senha temporária (mínimo 12 caracteres)"
                   value={temporaryPassword} onChangeText={setTemporaryPassword} secureTextEntry />}
                 {selection.action === 'delete' && <Txt>Apagar esta conta também remove os dados associados.</Txt>}
                 <ErrorText message={error} />
-                <Btn title="Confirmar" danger={selection.action === 'delete'} onPress={confirm}
-                  disabled={busy || (selection.action === 'password' && temporaryPassword.length < 12)} />
+                <Btn title={selection.action === 'edit' ? 'Salvar alterações' : 'Confirmar'}
+                  danger={selection.action === 'delete'} onPress={confirm}
+                  disabled={busy || (selection.action === 'password' && temporaryPassword.length < 12) ||
+                    (selection.action === 'edit' && (!editName.trim() || !editEmail.trim()))} />
                 <Btn title="Cancelar" secondary disabled={busy} onPress={clearSelection} />
               </View>
             )}

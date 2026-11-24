@@ -8,5 +8,7 @@ interface Tokens extends JpaRepository<VerificationToken, Long> {
     @EntityGraph(attributePaths = "user")
     Optional<VerificationToken> findByTokenHashAndPurposeAndUsedFalse(String tokenHash, String purpose);
 
+    void deleteByUserId(Long userId);
+
     void deleteByUserIdAndPurpose(Long userId, String purpose);
 }

@@ -2,6 +2,7 @@ package com.moneyhere;
 
 import jakarta.validation.Valid;
 import java.nio.charset.StandardCharsets;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -22,13 +23,16 @@ public class AdminController {
     private final Tokens tokens;
     private final PasswordEncoder passwords;
     private final JdbcTemplate jdbc;
+    private final ApplicationEventPublisher events;
 
-    AdminController(Users users, AuthService auth, Tokens tokens, PasswordEncoder passwords, JdbcTemplate jdbc) {
+    AdminController(Users users, AuthService auth, Tokens tokens, PasswordEncoder passwords, JdbcTemplate jdbc,
+                    ApplicationEventPublisher events) {
         this.users = users;
         this.auth = auth;
         this.tokens = tokens;
         this.passwords = passwords;
         this.jdbc = jdbc;
+        this.events = events;
     }
 
     @GetMapping
@@ -47,6 +51,32 @@ public class AdminController {
     public Account create(@AuthenticationPrincipal Jwt jwt, @Valid @RequestBody Dto.Register body) {
         requireAdmin(jwt);
         return Account.from(auth.createAccount(body));
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public Account edit(@AuthenticationPrincipal Jwt jwt, @PathVariable Long id,
+                        @Valid @RequestBody Dto.AccountEdit body) {
+        User account = target(jwt, id);
+        String previousEmail = account.email;
+        String name = body.name().strip();
+        String email = auth.normalize(body.email());
+        boolean nameChanged = !name.equals(account.name);
+        boolean emailChanged = !email.equals(previousEmail);
+        account.name = name;
+        if (emailChanged) {
+            account.email = email;
+            account.verified = false;
+            account.sessionVersion++;
+            auth.saveWithUniqueEmail(account);
+            tokens.deleteByUserId(id);
+        }
+        if (nameChanged || emailChanged) {
+            String description = nameChanged && emailChanged ? "O nome e o e-mail da sua conta foram alterados."
+                : nameChanged ? "O nome da sua conta foi alterado." : "O e-mail da sua conta foi alterado.";
+            events.publishEvent(new AccountNotice(previousEmail, description));
+        }
+        return Account.from(account);
     }
 
     @PutMapping("/{id}/status")
@@ -88,6 +118,7 @@ public class AdminController {
         account.mustChangePassword = true;
         account.sessionVersion++;
         tokens.deleteByUserIdAndPurpose(id, "RESET");
+        events.publishEvent(new AccountNotice(account.email, "A senha da sua conta foi redefinida."));
     }
 
     @DeleteMapping("/{id}")

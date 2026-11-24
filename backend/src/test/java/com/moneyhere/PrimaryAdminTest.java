@@ -1,13 +1,21 @@
 package com.moneyhere;
 
+import java.sql.SQLException;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,6 +27,9 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class PrimaryAdminTest {
     private final Users users = mock(Users.class);
@@ -26,7 +37,101 @@ class PrimaryAdminTest {
     private final PasswordEncoder passwords = mock(PasswordEncoder.class);
     private final AuthService auth = new AuthService(users, tokens, passwords, mock(JwtEncoder.class),
         mock(JavaMailSender.class), "", "http://localhost");
-    private final AdminController admin = new AdminController(users, auth, tokens, passwords, mock(JdbcTemplate.class));
+    private final ApplicationEventPublisher events = mock(ApplicationEventPublisher.class);
+    private final AdminController admin = new AdminController(users, auth, tokens, passwords, mock(JdbcTemplate.class), events);
+
+    @Test
+    void editarEmailNormalizaEnderecoERevogaSessaoETokensAntigos() {
+        User member = account(3L, "anterior@example.invalid", AccountRole.USER);
+        member.verified = true;
+        when(users.findLockedById(member.id)).thenReturn(Optional.of(member));
+
+        var result = admin.edit(adminToken(), member.id, new Dto.AccountEdit(" Carlos ", "Carlos@example.invalid"));
+
+        assertEquals("Carlos", result.name());
+        assertEquals("carlos@example.invalid", result.email());
+        assertFalse(member.verified);
+        assertEquals(1, member.sessionVersion);
+        verify(users).saveAndFlush(member);
+        verify(tokens).deleteByUserId(member.id);
+        verify(events).publishEvent(new AccountNotice("anterior@example.invalid", "O nome e o e-mail da sua conta foram alterados."));
+    }
+
+    @Test
+    void rotaPutEditaSoNomeEPreservaSessaoETokens() throws Exception {
+        User member = account(3L, "carlos@example.invalid", AccountRole.USER);
+        member.verified = true;
+        when(users.findLockedById(member.id)).thenReturn(Optional.of(member));
+
+        var mvc = MockMvcBuilders.standaloneSetup(admin)
+            .setCustomArgumentResolvers(new AuthenticationPrincipalArgumentResolver())
+            .build();
+        SecurityContextHolder.getContext().setAuthentication(new JwtAuthenticationToken(adminToken()));
+        try {
+            mvc.perform(put("/api/admin/users/{id}", member.id)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("""
+                        {"name":"Carlos","email":"carlos@example.invalid"}
+                        """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Carlos"));
+        } finally {
+            SecurityContextHolder.clearContext();
+        }
+
+        assertTrue(member.verified);
+        assertEquals(0, member.sessionVersion);
+        verifyNoInteractions(tokens);
+        verify(events).publishEvent(new AccountNotice(member.email, "O nome da sua conta foi alterado."));
+    }
+
+    @Test
+    void edicaoSemAlteracoesNaoGeraAviso() {
+        User member = account(3L, "carlos@example.invalid", AccountRole.USER);
+        member.name = "Carlos";
+        when(users.findLockedById(member.id)).thenReturn(Optional.of(member));
+
+        admin.edit(adminToken(), member.id, new Dto.AccountEdit(" Carlos ", "Carlos@example.invalid"));
+
+        verifyNoInteractions(tokens, events);
+    }
+
+    @Test
+    void redefinirSenhaGeraAvisoSemIncluirSenha() {
+        User member = account(3L, "carlos@example.invalid", AccountRole.USER);
+        when(users.findLockedById(member.id)).thenReturn(Optional.of(member));
+
+        admin.password(adminToken(), member.id, new Dto.AdminPassword("senha-temporaria"));
+
+        assertTrue(member.mustChangePassword);
+        verify(events).publishEvent(new AccountNotice(member.email, "A senha da sua conta foi redefinida."));
+    }
+
+    @Test
+    void editarComEmailDuplicadoRetornaConflito() {
+        User member = account(3L, "anterior@example.invalid", AccountRole.USER);
+        when(users.findLockedById(member.id)).thenReturn(Optional.of(member));
+        when(users.saveAndFlush(member)).thenThrow(new DataIntegrityViolationException("E-mail duplicado",
+            new SQLException("Restrição de unicidade", "23505")));
+
+        var error = assertThrows(ResponseStatusException.class,
+            () -> admin.edit(adminToken(), member.id, new Dto.AccountEdit("Carlos", "usado@example.invalid")));
+
+        assertEquals(HttpStatus.CONFLICT, error.getStatusCode());
+        assertEquals("E-mail já cadastrado", error.getReason());
+        verifyNoInteractions(tokens, events);
+    }
+
+    @Test
+    void outroAdministradorNaoPodeEditarContaPrincipal() {
+        User primary = primaryAdmin();
+
+        var error = assertThrows(ResponseStatusException.class,
+            () -> admin.edit(adminToken(), primary.id, new Dto.AccountEdit("Carlos", "outro@example.invalid")));
+
+        assertEquals(HttpStatus.FORBIDDEN, error.getStatusCode());
+        assertEquals("principal@example.invalid", primary.email);
+    }
 
     @Test
     void outroAdministradorNaoPodeExcluirContaPrincipal() {

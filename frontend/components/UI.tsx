@@ -8,15 +8,20 @@ export function Input({label,value,onChangeText,placeholder,secureTextEntry=fals
 export function Card({children,style}:{children:React.ReactNode,style?:any}){const c=useColors();return <View style={[{padding:19,backgroundColor:c.panel,borderRadius:17,borderWidth:1,borderColor:c.border,gap:10},style]}>{children}</View>}
 const nav=[['Home','/'],['Conteúdo','/conteudo'],['Trilhas','/trilhas'],['Ferramentas','/ferramentas'],['Sobre','/sobre'],['Contato','/contato']];
 export function Screen({title,children,protectedPage=false}:{title?:string,children:React.ReactNode,protectedPage?:boolean}){
- const c=useColors();const {user,ready,theme,toggleTheme,logout}=useSession();const {width}=useWindowDimensions();const wide=width>=800;
- return <ScrollView style={{flex:1,backgroundColor:c.bg}} contentContainerStyle={{flexGrow:1}} keyboardShouldPersistTaps="handled">
+ const c=useColors();const {user,ready,canRegister,theme,toggleTheme,logout}=useSession();const {width}=useWindowDimensions();const wide=width>=800;
+ return <ScrollView style={{flex:1,backgroundColor:c.bg}} contentContainerStyle={{flexGrow:1}} keyboardShouldPersistTaps="handled" stickyHeaderIndices={[0]}>
   <View style={{backgroundColor:c.panel,borderBottomColor:c.border,borderBottomWidth:1,paddingVertical:13,paddingHorizontal:18}}>
    <View style={{width:'100%',maxWidth:1150,alignSelf:'center',gap:10,flexDirection:'row',flexWrap:'wrap',alignItems:'center',justifyContent:'space-between'}}>
     <Pressable accessibilityRole="link" onPress={()=>router.push('/')}><Txt size={23} bold>◈ MONEY <Text style={{color:c.primary}}>HERE</Text></Txt></Pressable>
     <View style={{flexDirection:'row',flexWrap:'wrap',gap:wide?18:10,alignItems:'center'}}>{nav.map(([name,path])=><Pressable key={path} accessibilityRole="link" onPress={()=>router.push(path as any)}><Txt size={wide?14:12}>{name}</Txt></Pressable>)}</View>
-    <View style={{flexDirection:'row',alignItems:'center',gap:12}}>
+    <View style={{flexDirection:'row',flexWrap:'wrap',alignItems:'center',gap:12}}>
      <Pressable accessibilityLabel="Alternar tema" accessibilityRole="button" onPress={toggleTheme}><Txt>{theme==='dark'?'☀️':'🌙'}</Txt></Pressable>
-     {user?<><Pressable onPress={()=>router.push('/app')}><Txt bold size={14}>Meu painel</Txt></Pressable>{user.role==='ADMIN'&&!user.mustChangePassword&&<Pressable onPress={()=>router.push('/admin')}><Txt size={14}>Administração</Txt></Pressable>}<Pressable onPress={async()=>{await logout();router.replace('/');}}><Txt size={14}>Sair</Txt></Pressable></>:<><Pressable onPress={()=>router.push('/login')}><Txt size={14}>Entrar</Txt></Pressable><Pressable onPress={()=>router.push('/cadastro')}><Txt size={14} bold> Criar conta</Txt></Pressable></>}
+     {user ? <>
+      <Pressable onPress={()=>router.push('/app')}><Txt bold size={14}>Meu painel</Txt></Pressable>
+      {user.role==='ADMIN'&&!user.mustChangePassword&&<Pressable onPress={()=>router.push('/admin')}><Txt size={14}>Administração</Txt></Pressable>}
+      <Pressable onPress={async()=>{await logout();router.replace('/');}}><Txt size={14}>Sair</Txt></Pressable>
+     </> : ready && <Pressable onPress={()=>router.push('/login')}><Txt size={14}>Entrar</Txt></Pressable>}
+     {canRegister && <Pressable onPress={()=>router.push('/cadastro')}><Txt size={14} bold>Criar conta</Txt></Pressable>}
     </View>
    </View>
   </View>

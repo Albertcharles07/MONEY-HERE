@@ -7,6 +7,9 @@ spring:
     properties:
       mail.smtp.auth: ${MAIL_AUTH:false}
       mail.smtp.starttls.enable: ${MAIL_TLS:false}
+      mail.smtp.connectiontimeout: 5000
+      mail.smtp.timeout: 5000
+      mail.smtp.writetimeout: 5000
 app:
   jwt-secret: ${JWT_SECRET}
   frontend-origins: ${FRONTEND_ORIGINS:http://localhost:8081,http://127.0.0.1:8081,http://localhost:19006,http://127.0.0.1:19006}

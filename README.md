@@ -66,7 +66,9 @@ try {
 
 Ao subir, o backend cria a conta com papel `ADMIN` e senha BCrypt. Em reinicializações seguintes, use o comando normal. Se o mesmo admin já existir, a configuração preserva a senha cadastrada. Uma conta comum que já existe precisa continuar separada da conta de administração.
 
-Entre com a conta criada e abra **Administração** no menu ou a rota `/admin`. O painel lista contas e permite pesquisar pelo nome ou e-mail. No menu **Opções**, o administrador pode ativar ou desativar contas comuns e administradores secundários, definir uma senha temporária, apagar contas e alterar o papel entre usuário e administrador. O administrador principal tem uma conta protegida. As rotas administrativas bloqueiam qualquer alteração nessa conta, e o painel oculta o menu **Opções** dela. A pessoa que recebe uma senha temporária deve trocá-la ao entrar. Alterações de acesso e senha encerram a sessão existente da conta. Uma conta desativada perde acesso aos endpoints privados e volta a poder entrar quando reativada. A conta administrativa permite troca de senha pela área autenticada.
+Entre com a conta criada e abra **Administração** no menu ou a rota `/admin`. Pesquise pelo nome ou e-mail e abra **Opções → Editar** para corrigir os dados de uma conta elegível. O menu também permite ativar ou desativar contas, definir uma senha temporária, apagar contas e alterar papéis. A conta do administrador principal é protegida e o painel oculta o menu **Opções** dela.
+
+Quando o e-mail muda, a conta precisa entrar novamente com o novo endereço. Mudanças de acesso e senha também encerram a sessão existente. A pessoa que recebe uma senha temporária deve trocá-la ao entrar. Uma conta desativada perde acesso aos endpoints privados e pode voltar a entrar quando reativada. A conta administrativa permite troca de senha pela área autenticada.
 
 ### Recuperação de senha por e-mail
 
@@ -83,7 +85,7 @@ $env:MAIL_TLS="true"
 $env:PUBLIC_URL="http://localhost:8081"
 ```
 
-SMTP é necessário somente para a recuperação de senha por e-mail. Contas administrativas não usam esse fluxo.
+Com o SMTP configurado, o backend envia um aviso depois que o painel redefine uma senha ou salva uma alteração no nome ou no e-mail da conta. O aviso informa o tipo de alteração, sem incluir a senha ou os novos dados. Se o endereço mudar, o aviso vai para o e-mail anterior. Contas administrativas mantêm o fluxo de recuperação pelo painel.
 
 ## Executar frontend (PowerShell)
 
@@ -131,6 +133,7 @@ Conecte o computador e o celular ao mesmo Wi-Fi. Inicie o backend com o script e
 | GET | `/api/public/content/{key}` | Artigo individual |
 | GET | `/api/public/tracks` | Trilhas, com autenticação JWT |
 | GET/POST | `/api/admin/users` | Lista contas e cria usuários comuns |
+| PUT | `/api/admin/users/{id}` | Corrige nome e e-mail de uma conta elegível |
 | PUT | `/api/admin/users/{id}/status` | Desativa ou reativa uma conta, inclusive de administrador secundário |
 | PUT | `/api/admin/users/{id}/role` | Altera o papel da conta |
 | PUT | `/api/admin/users/{id}/password` | Define senha temporária |
@@ -178,16 +181,16 @@ Os testes frontend cobrem juros, reserva, dívida, aposentadoria e crédito. Nen
 | Recurso | Situação |
 |---|---|
 | React Native com Expo SDK 54 | Aplicativo configurado para Android, iOS e web. A compilação web foi validada. |
-| Telas e navegação | Mais de cinco telas, incluindo login, com navegação pelo Expo Router e layout responsivo. |
+| Telas e navegação | Navegação pelo Expo Router, layout responsivo e cabeçalho visível durante a rolagem. Os atalhos de cadastro aparecem para visitantes sem sessão e para o administrador principal. |
 | Tema e sessão | Tema claro/escuro persistente. React Context gerencia a sessão e o AsyncStorage guarda a preferência de tema e o token localmente. |
 | API REST e autenticação | Spring Boot com Spring Security, login por e-mail e senha, hash BCrypt e JWT para rotas privadas. |
 | Banco de dados | PostgreSQL hospedado no Neon, com migrações Flyway para contas, metas, orçamento, progresso e conteúdo educativo. |
 | Catálogo | 28 artigos no catálogo padrão, em sete categorias, com busca, filtros, exemplos e exercícios. Os artigos são públicos. |
 | Trilhas e favoritos | Trilhas exigem login. O aplicativo registra a abertura e a conclusão de módulos, atribui 25 XP por conclusão e permite salvar artigos como favoritos. |
-| Metas e orçamento | Cadastro, consulta, edição e exclusão dos próprios registros. A interface formata valores em reais e a API oferece consulta por ID e resumo do orçamento com filtro mensal opcional. |
+| Metas e orçamento | Cadastro, consulta, edição e exclusão dos próprios registros. A interface formata valores em reais e aceita o prazo da meta em `DD/MM/AAAA`. A API oferece consulta por ID e resumo do orçamento com filtro mensal opcional. |
 | Simuladores | Seis opções educativas para contas autenticadas, com cálculos de juros compostos, reserva, dívidas, aposentadoria, comparativo de investimentos e custo do crédito. |
 | Recuperação de senha | Contas comuns podem solicitar um link por SMTP quando o remetente está configurado. O link expira em 30 minutos. O recebimento foi confirmado em um teste manual. |
-| Administração de contas | Cadastro e pesquisa de usuários, alteração de permissões, ativação, desativação, redefinição de senha e exclusão de contas elegíveis. A conta do administrador principal é protegida. |
+| Administração de contas | Cadastro, pesquisa e edição de nome e e-mail, além de alteração de permissões, ativação, desativação, redefinição de senha e exclusão de contas elegíveis. A conta do administrador principal é protegida. |
 | Perfil, privacidade e termos | Edição de perfil, troca de senha, exclusão de conta comum e páginas de Termos de Uso e Política de Privacidade da versão acadêmica. |
 
 O JWT vence 30 minutos após a emissão. A execução local descrita neste README usa HTTP.

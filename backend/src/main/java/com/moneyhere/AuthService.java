@@ -1,6 +1,9 @@
 package com.moneyhere;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,12 +11,14 @@ import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
 import java.time.*;
 import java.util.*;
 import java.security.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HexFormat;
 @Service public class AuthService {
+ private static final Logger log = LoggerFactory.getLogger(AuthService.class);
  private final Users users;private final Tokens tokens;private final PasswordEncoder enc;private final JwtEncoder jwt;
  private final JavaMailSender mail;private final String from;private final String publicUrl;
  AuthService(Users users,Tokens tokens,PasswordEncoder enc,JwtEncoder jwt,JavaMailSender mail,
@@ -35,7 +40,8 @@ import java.util.HexFormat;
   Map.entry("name",user.name),Map.entry("email",user.email),Map.entry("verified",user.verified),
   Map.entry("goal",user.goal==null?"":user.goal),Map.entry("level",user.level==null?"":user.level),
   Map.entry("learningFormat",user.learningFormat==null?"":user.learningFormat),Map.entry("theme",user.theme),
-  Map.entry("notifications",user.notifications),Map.entry("role",user.role.name()));}
+  Map.entry("notifications",user.notifications),Map.entry("role",user.role.name()),
+  Map.entry("primaryAdmin",user.primaryAdmin));}
  @Transactional public Map<String,Object> register(Dto.Register body){
   createAccount(body);
   return Map.of("message","Conta criada. Você já pode entrar.");
@@ -46,6 +52,9 @@ import java.util.HexFormat;
   if(body.password().getBytes(StandardCharsets.UTF_8).length>72)
    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"A senha deve ter no máximo 72 bytes");
   User user=new User();user.name=body.name().trim();user.email=email;user.passwordHash=enc.encode(body.password());
+  return saveWithUniqueEmail(user);
+ }
+ User saveWithUniqueEmail(User user){
   try { return users.saveAndFlush(user); }
   catch (org.springframework.dao.DataIntegrityViolationException e) {
    if (e.getMostSpecificCause() instanceof java.sql.SQLException sql && "23505".equals(sql.getSQLState()))
@@ -75,22 +84,43 @@ import java.util.HexFormat;
   message.setText("Abra este link em até "+minutes+" minutos: "+publicUrl+(verify?"/verificar-email?token=":"/resetar-senha?token=")+raw);
   mail.send(message);
  }
+ @TransactionalEventListener
+ public void sendAccountNotice(AccountNotice notice) {
+  if (from.isBlank()) return;
+  SimpleMailMessage message = new SimpleMailMessage();
+  message.setFrom(from);
+  message.setTo(notice.recipient());
+  message.setSubject("Aviso sobre sua conta no Money Here");
+  message.setText(notice.description());
+  try {
+   mail.send(message);
+  } catch (MailException failure) {
+   log.warn("Não foi possível enviar o aviso de alteração de conta ({})", failure.getClass().getSimpleName());
+  }
+ }
  public String hash(String token){try{byte[] digest=MessageDigest.getInstance("SHA-256").digest(token.getBytes(StandardCharsets.UTF_8));return HexFormat.of().formatHex(digest);}catch(NoSuchAlgorithmException e){throw new IllegalStateException(e);}}
- @Transactional public void verify(String raw){VerificationToken token=valid(raw,"VERIFY");token.user.verified=true;token.used=true;}
+ @Transactional public void verify(String raw){
+  User user=lockTokenUser(valid(raw,"VERIFY"));
+  valid(raw,"VERIFY").used=true;
+  user.verified=true;
+ }
  @Transactional public void reset(String raw,String password){
-  VerificationToken token=valid(raw,"RESET");
-  User user=users.findLockedByEmail(token.user.email).orElseThrow();
+  User user=lockTokenUser(valid(raw,"RESET"));
   if(user.role==AccountRole.ADMIN || !user.enabled)
    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Token inválido ou expirado");
   valid(raw,"RESET").used=true;
   user.passwordHash=enc.encode(password); user.sessionVersion++; user.mustChangePassword=false;
+ }
+ private User lockTokenUser(VerificationToken token){
+  return users.findLockedById(token.user.id)
+   .orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST,"Token inválido ou expirado"));
  }
  private VerificationToken valid(String raw,String purpose){return tokens.findByTokenHashAndPurposeAndUsedFalse(hash(raw),purpose)
   .filter(t->t.expiresAt.isAfter(Instant.now())).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST,"Token inválido ou expirado"));}
  @Transactional public void forgot(String email){
   if(from.isBlank())
    throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,"A recuperação por e-mail está indisponível no momento.");
-  users.findByEmail(normalize(email)).filter(u->u.enabled && u.role!=AccountRole.ADMIN)
+  users.findLockedByEmail(normalize(email)).filter(u->u.enabled && u.role!=AccountRole.ADMIN)
    .ifPresent(user->sendToken(user,"RESET",30));
  }
  @Transactional public Map<String,Object> update(User user,Dto.Profile b){

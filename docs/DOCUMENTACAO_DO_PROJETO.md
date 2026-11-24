@@ -19,11 +19,11 @@ João Pedro é responsável pela tela **Meus favoritos** e pelo armazenamento lo
 |---|---|
 | Conteúdo educativo | Ler artigos públicos, buscar por assunto e filtrar por categoria. |
 | Trilhas e favoritos | Com uma conta, salvar artigos, abrir módulos e marcar conclusões. Cada conclusão vale 25 XP. |
-| Metas | Cadastrar, consultar, editar e excluir as próprias metas financeiras. |
+| Metas | Cadastrar, consultar, editar e excluir as próprias metas financeiras, com prazo opcional em `DD/MM/AAAA`. |
 | Orçamento | Registrar receitas e despesas e consultar o saldo e os gastos por categoria, com filtro mensal opcional. |
 | Simuladores | Calcular juros compostos, reserva de emergência, dívidas, aposentadoria, comparativo de investimentos e custo do crédito. |
 | Conta | Criar conta, entrar, editar perfil, trocar senha e solicitar recuperação por e-mail quando o SMTP estiver configurado. |
-| Administração | Com permissão de administrador, cadastrar e pesquisar usuários, alterar papéis, ativar ou desativar contas e definir senhas temporárias. |
+| Administração | Cadastrar e pesquisar usuários, corrigir nome e e-mail de contas elegíveis, alterar papéis, ativar ou desativar contas e definir senhas temporárias. |
 
 ## Arquitetura e código
 
@@ -32,7 +32,7 @@ O aplicativo Expo envia requisições HTTP para a API Spring Boot. O backend val
 | Componente | Onde acontece no código |
 |---|---|
 | Expo SDK 54 | `"expo": "~54.0.0"` define a série do SDK e `"main": "expo-router/entry"` inicia a navegação. [package.json](../frontend/package.json) |
-| Telas e navegação | O Expo Router monta as telas a partir dos arquivos em `frontend/app/`. O `_layout.tsx` envolve a pilha de navegação no `SessionProvider`. [Layout](../frontend/app/_layout.tsx) |
+| Telas e navegação | O Expo Router monta as telas a partir dos arquivos em `frontend/app/`. O `_layout.tsx` conecta a navegação à sessão. O cabeçalho compartilhado permanece no topo durante a rolagem. [Layout](../frontend/app/_layout.tsx), [UI.tsx](../frontend/components/UI.tsx) |
 | Cliente HTTP | `api()` resolve a URL do backend, acrescenta `/api` e envia o token nas chamadas protegidas. [api.ts](../frontend/lib/api.ts) |
 | Autenticação | O `AuthService` confere a senha com BCrypt e emite um JWT de 30 minutos. O Spring Security valida o token e controla o acesso. [AuthService.java](../backend/src/main/java/com/moneyhere/AuthService.java), [SecurityConfig.java](../backend/src/main/java/com/moneyhere/SecurityConfig.java) |
 | Armazenamento local | O `AsyncStorage` guarda o token em `moneyhere_token` e o tema em `moneyhere_theme`. O logout remove o token local. [session.tsx](../frontend/lib/session.tsx) |
@@ -41,6 +41,14 @@ O aplicativo Expo envia requisições HTTP para a API Spring Boot. O backend val
 | Simuladores | As fórmulas usadas pela tela de ferramentas ficam em `calculators.cjs`. [ferramentas.tsx](../frontend/app/ferramentas.tsx), [calculators.cjs](../frontend/lib/calculators.cjs) |
 
 No login, a tela `/login` chama `POST /api/auth/login`. O frontend guarda o JWT retornado e o inclui no cabeçalho `Authorization: Bearer <token>` nas próximas requisições protegidas. Quando o app reabre, ele recupera o token e consulta `GET /api/me` para carregar a conta. O login é gerenciado pelo Spring, com `auth: false` na configuração de serviços do Neon. [session.tsx](../frontend/lib/session.tsx), [neon.ts](../neon.ts)
+
+Os atalhos de cadastro na página inicial e no cabeçalho aparecem para visitantes sem sessão e para o administrador principal. O formulário de metas aceita `DD/MM/AAAA`, valida o prazo e o converte para `AAAA-MM-DD` na chamada da API. [Página inicial](../frontend/app/index.tsx), [metas.tsx](../frontend/app/app/metas.tsx)
+
+## Edição de contas e avisos por e-mail
+
+No painel **Administração → Opções → Editar**, o administrador pode corrigir o nome e o e-mail das contas elegíveis. O backend rejeita e-mails já cadastrados e mantém a proteção da conta do administrador principal. Alterar o endereço encerra a sessão da conta e invalida os links emitidos para o endereço anterior. [admin.tsx](../frontend/app/admin.tsx), [AdminController.java](../backend/src/main/java/com/moneyhere/AdminController.java)
+
+Com SMTP configurado, o backend envia um aviso depois de salvar uma alteração no nome ou no e-mail, ou depois de redefinir a senha pelo painel. O aviso informa apenas o que aconteceu. Em uma troca de e-mail, a mensagem segue para o endereço anterior. [AuthService.java](../backend/src/main/java/com/moneyhere/AuthService.java), [Configuração de SMTP](../README.md#recuperação-de-senha-por-e-mail)
 
 ## Banco de dados e migrações
 
@@ -65,6 +73,8 @@ A API local usa `http://localhost:8080` por padrão. As rotas de artigos e de au
 | GET, POST | `/api/progress`, `/api/favorites` | Consultar e registrar progresso ou favoritos. |
 | POST | `/api/progress/open` | Registrar a abertura de um módulo. |
 | GET, POST | `/api/admin/users` | Listar e criar usuários comuns. |
+| PUT | `/api/admin/users/{id}` | Editar o nome e o e-mail de uma conta elegível. |
+| PUT | `/api/admin/users/{id}/password` | Definir senha temporária e disparar o aviso quando o SMTP estiver configurado. |
 
 A lista completa inclui exclusão de favoritos e as operações de administração por usuário. [Referência REST no README](../README.md#endpoints-rest)
 

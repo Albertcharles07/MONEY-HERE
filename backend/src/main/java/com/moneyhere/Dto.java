@@ -9,6 +9,8 @@ public final class Dto {
   @jakarta.validation.constraints.Email(regexp=EMAIL_DOMAIN) @NotBlank @Size(max=254) String email,
   @NotBlank @Size(min=8,max=72) String password,boolean consent){}
  public record AccountStatus(@NotNull Boolean enabled){}
+ public record AccountEdit(@NotBlank @Size(max=130) String name,
+  @jakarta.validation.constraints.Email(regexp=EMAIL_DOMAIN) @NotBlank @Size(max=254) String email){}
  public record RoleChange(@NotNull AccountRole role){}
  public record AdminPassword(@NotBlank @Size(min=12,max=72) String password){}
  public record Login(@jakarta.validation.constraints.Email @NotBlank String email,@NotBlank String password){}
