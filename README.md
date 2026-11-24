@@ -200,7 +200,7 @@ O JWT vence 30 minutos após a emissão. A execução local descrita neste READM
 | Integrante | RM | Contribuição ou responsabilidade na entrega | Commits publicados |
 |---|---|---|---|
 | Charles Elias de Araujo | 1143175185 | Ambiente, execução da API, testes funcionais e publicação no GitHub | [`cc5047f`](https://github.com/Albertcharles07/MONEY-HERE/commit/cc5047f) |
-| Carlos Daniel de Souza Gomes | 1143058270 | Banco de dados no Neon, migrações, autenticação JWT e administração de contas | [`6f044ff`](https://github.com/Albertcharles07/MONEY-HERE/commit/6f044ff) — registro da contribuição individual. [`4a898e8`](https://github.com/Albertcharles07/MONEY-HERE/commit/4a898e8) — correção da atribuição de banco de dados, autenticação e administração. |
+| Carlos Daniel de Souza Gomes | 1143058270 | Banco no Neon, migrações, autenticação JWT, administração e avisos por e-mail, navegação, prazos de metas e valores em reais nos simuladores | [`6f044ff`](https://github.com/Albertcharles07/MONEY-HERE/commit/6f044ff), [`4a898e8`](https://github.com/Albertcharles07/MONEY-HERE/commit/4a898e8), [`33e155d`](https://github.com/Albertcharles07/MONEY-HERE/commit/33e155d), [`79a1b7f`](https://github.com/Albertcharles07/MONEY-HERE/commit/79a1b7f) |
 | Lucas Rodrigues de Magalhaes | 1142712305 | Endpoints REST de metas e orçamento, resumo financeiro e testes da API | [`f0442aa`](https://github.com/Albertcharles07/MONEY-HERE/commit/f0442aa), [`cf165d3`](https://github.com/Albertcharles07/MONEY-HERE/commit/cf165d3) e [`691bede`](https://github.com/Albertcharles07/MONEY-HERE/commit/691bede) |
 | João Pedro dias Araujo | 1143176420 | Tela de favoritos e armazenamento local da sessão e do tema |  |
 
@@ -240,6 +240,9 @@ Projeto educativo — taxas e exemplos são ilustrativos. Não é aconselhamento
 - Implementação das regras de administração de contas para alterar permissões, definir senhas temporárias, desativar, reativar e excluir contas elegíveis ([API administrativa](backend/src/main/java/com/moneyhere/AdminController.java)).
 - Proteção da conta do administrador principal contra desativação, exclusão, redefinição de senha e remoção de privilégios por outros administradores ([testes da conta principal](backend/src/test/java/com/moneyhere/PrimaryAdminTest.java)).
 - Preparação de testes unitários e de integração para autenticação, proteção da conta principal, revogação de sessões e acesso aos dados no PostgreSQL ([testes](backend/src/test/java/com/moneyhere)).
+- Edição de nome e e-mail no painel de administração, com validação de e-mail duplicado, revogação de sessão na troca de endereço e avisos por SMTP após edição ou redefinição de senha. [Commit `33e155d`](https://github.com/Albertcharles07/MONEY-HERE/commit/33e155d)
+- Cabeçalho fixo durante a rolagem, atalhos de cadastro para visitantes e administrador principal e prazo de metas no formato brasileiro `DD/MM/AAAA`. [Commit `33e155d`](https://github.com/Albertcharles07/MONEY-HERE/commit/33e155d)
+- Máscara e validação de reais nos seis simuladores financeiros e inclusão das variáveis de SMTP no `.env.example`. [Commit `79a1b7f`](https://github.com/Albertcharles07/MONEY-HERE/commit/79a1b7f)
 
 ### Lucas Rodrigues de Magalhaes — RM: 1142712305
 
