@@ -4,6 +4,8 @@ Projeto acadêmico com **React Native / Expo SDK 54 (Android, iOS e web)**, **Sp
 
 O React Native/Expo chama a API Spring Boot por HTTP. A API usa Spring Data JPA para usuários, perfil, metas, orçamento, progresso e favoritos, e Spring JDBC para artigos e trilhas. O Neon PostgreSQL armazena esses dados. Os simuladores calculam os resultados no aplicativo.
 
+Veja a [documentação do projeto](docs/DOCUMENTACAO_DO_PROJETO.md) para uma visão das funcionalidades, da arquitetura e dos principais arquivos do código.
+
 ## Requisitos no Windows
 
 - Java 21 e Maven 3.9+ disponíveis no PATH.
@@ -192,11 +194,12 @@ O JWT vence 30 minutos após a emissão. A execução local descrita neste READM
 
 ## Entrega em equipe
 
-| Integrante | RM | Contribuição verificável | Commits publicados |
+| Integrante | RM | Contribuição ou responsabilidade na entrega | Commits publicados |
 |---|---|---|---|
 | Charles Elias de Araujo | 1143175185 | Ambiente, execução da API, testes funcionais e publicação no GitHub | [`cc5047f`](https://github.com/Albertcharles07/MONEY-HERE/commit/cc5047f) |
 | Carlos Daniel de Souza Gomes | 1143058270 | Banco de dados no Neon, migrações, autenticação JWT e administração de contas | [`6f044ff`](https://github.com/Albertcharles07/MONEY-HERE/commit/6f044ff) — registro da contribuição individual. [`4a898e8`](https://github.com/Albertcharles07/MONEY-HERE/commit/4a898e8) — correção da atribuição de banco de dados, autenticação e administração. |
 | Lucas Rodrigues de Magalhaes | 1142712305 | Endpoints REST de metas e orçamento, resumo financeiro e testes da API | [`f0442aa`](https://github.com/Albertcharles07/MONEY-HERE/commit/f0442aa), [`cf165d3`](https://github.com/Albertcharles07/MONEY-HERE/commit/cf165d3) e [`691bede`](https://github.com/Albertcharles07/MONEY-HERE/commit/691bede) |
+| João Pedro dias Araujo | 1143176420 | Tela de favoritos e armazenamento local da sessão e do tema |  |
 
 Cada integrante deve registrar suas mudanças no Git. Antes da entrega, confira o histórico no GitHub, valide os fluxos no ambiente da apresentação e reúna as evidências de execução e testes.
 
@@ -241,3 +244,8 @@ Projeto educativo — taxas e exemplos são ilustrativos. Não é aconselhamento
 - Criação dos endpoints `GET /api/goals/{id}` e `GET /api/budget/{id}`, que retornam um registro específico apenas para o usuário dono dele (404 para registros de outros usuários) ([controller da API](backend/src/main/java/com/moneyhere/ApiController.java)).
 - Refatoração das buscas por id no controller, reaproveitando o mesmo método na consulta, na edição e na exclusão.
 - Criação do endpoint `GET /api/budget/summary`, que calcula receitas, despesas, saldo e gastos por categoria, com filtro opcional por mês (`?month=AAAA-MM`) e retorno 400 para mês inválido.
+
+### João Pedro dias Araujo — RM: 1143176420
+
+- Responsável pela tela **Meus favoritos** na entrega, incluindo a listagem, a abertura e a remoção de artigos salvos. [favoritos.tsx](frontend/app/app/favoritos.tsx)
+- Responsável pelo armazenamento local da sessão e do tema com AsyncStorage, incluindo a recuperação do token ao abrir o app, sua remoção no logout e a preferência de tema. [session.tsx](frontend/lib/session.tsx)
